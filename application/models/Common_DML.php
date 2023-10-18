@@ -23,6 +23,21 @@ class Common_DML extends CI_Model {
 		$query = $this->db->get();
         return $query->result_array();   
     }
+
+    public function get_data_row( $table_name, $where = array(), $field = '*', $order = array() ){
+        $this->db->select( $field );
+		$this->db->from( $table_name );
+		if( !empty($where) ){
+			 $this->db->where( $where );
+		}
+		if(!empty($order)){
+			foreach($order as $k=>$v){
+				$this->db->order_by($k, $v);
+			}
+		}
+		$query = $this->db->get();
+        return $query->row();   
+    }
     
     public function put_data( $table_name, $what = array() ){
         $this->db->insert($table_name,$what);

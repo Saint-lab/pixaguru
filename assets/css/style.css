@@ -37,7 +37,7 @@ Copyright (c) 2023
 body {
 	font-family: 'Nunito', sans-serif;
 	font-weight: 400;
-	font-size: 15px;
+	font-size: 12px;
 	line-height: 1.5;
 	color: var(--pixaguru-global-color);
 	background: var(--pixaguru-body-bg);
