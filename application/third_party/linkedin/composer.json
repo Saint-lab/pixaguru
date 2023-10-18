@@ -1,0 +1,6 @@
+{
+    "require": {
+        "zoonman/linkedin-api-php-client": "^0.0.14",
+        "vlucas/phpdotenv": "^2.5"
+    }
+}

@@ -1,0 +1,839 @@
+/*--------------------- Copyright (c) 2023 ----------------------- 
+[Master Stylesheet] 
+Project: Pixaguru - Image or Graphics Creator tool for Social Media, Advertisement, Presentation, Website
+Version:
+Author: 
+ ------------------------------------------------------------------- 
+[Table of contents] 
+	1. Global CSS Start
+	2. Comman CSS Start
+        -- Header CSS Start
+        -- Footer CSS Start
+	3. Main CSS Start
+	4. Responsive CSS Start
+-------------------------------------------------------------------*/
+
+
+/* 1. Global CSS Start */
+
+:root {
+    --pg-global-family: 'Inter', sans-serif;    
+    --pg-global-size: 16px;
+    --pg-title-family: 'Inter', sans-serif;    
+    --pg-title-size: 32px;    
+    --pg-primary-color: #FF3E74;
+    --pg-white: #ffffff;
+    --pg-title-color:#DDDDDD;
+    --pg-transition: all 0.3s;
+}
+* {
+    outline: 0 !important;    
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--pg-global-family);
+    font-weight: 500;
+    font-size: var(--pg-global-size);
+    line-height: 1.8;        
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    width: 6px;
+    box-shadow: none;
+}
+
+body::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+    box-shadow: none;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: var(--pg-primary-color);
+    box-shadow: none;
+}
+
+a:visited:hover,
+a:hover,
+a:focus,
+button,
+button:hover {
+    color: var(--pg-primary-color);
+}
+
+a,
+a:hover,
+a:focus,
+button,
+button:hover {
+    text-decoration: none;
+    -webkit-transition: var(--pg-transition);
+    -moz-transition: var(--pg-transition);
+    -ms-transition: var(--pg-transition);
+    -o-transition: var(--pg-transition);
+    transition: var(--pg-transition);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+input,
+textarea,
+select,
+button,
+button:focus,
+button:hover,
+label,
+.form-control:focus {
+    box-shadow: none;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 10px;
+    color: var(--pg-title-color);
+    text-transform: capitalize;
+    font-family: var( --pg-title-family);
+    line-height: 1.2;
+}
+
+strong {
+    font-weight: 700;
+}
+
+ul,
+ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Heading */
+.pg-heading{
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--pg-white);
+    text-transform: capitalize;
+    text-align: center;
+}
+/* Heading */
+
+/* Shape Heading */
+.pg-shape-heading {
+    background-image: url(../images/heading-shape.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--pg-primary-color);
+    text-transform: capitalize;
+    text-align: center;
+    padding: 30px 0;
+    margin: 0 0 50px 0;
+}
+/* Shape Heading */
+
+/* Paragraph */
+.pg-paragraph {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--pg-title-color);
+    margin-bottom: 0;
+    max-width: 450px;
+    width: 100%;
+}
+/* Paragraph */
+
+/* Main CSS*/
+
+/* Header CSS Start */
+.pg-header-wrapper{
+    background-color: #03040D;
+    border: 1px solid rgba(255, 255, 255, 0.1);    
+}
+.pg-header-parent{
+    display: flex;
+    align-items: center;
+}
+.pg-menu{
+    margin-left: auto;
+}
+.pg-menu ul li{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 50px;
+}
+.pg-menu ul li:last-child{
+    margin-right: 0;
+}
+.pg-menu ul li a {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--pg-white);
+    text-transform: capitalize;
+    display: block;
+    padding: 40px 0;
+    transition: var(--pg-transition);
+}
+.pg-menu ul li a:hover{
+    color: var(--pg-primary-color);
+}
+.pg-menu ul li:last-child a {
+    min-width: 130px;
+    background: linear-gradient(180deg, #FF779D 0%, #FF3B72 100%);
+    border-radius: 5px;
+    display: flex;
+    display: inline-block;
+    text-align: center;
+    padding: 10px 0;
+}
+.pg-menu ul li:last-child a:hover {
+    transform: translateY(-5px);
+    color: var(--pg-white);
+}
+/* Header CSS End */
+
+/* Banner Section CSS Start */
+.pg-banner-wrapper{
+    background-image: url(../images/banner-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 80px 0;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    overflow-x: hidden;
+}
+.pg-banner-wrapper:before{
+    content: '';
+    background-image: url(../images/banner-shape.png);
+    background-repeat: no-repeat;
+    background-position: center;    
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    animation:4s installation infinite alternate;
+}
+@keyframes installation {
+    0% {
+        transform: translateY(0px);        
+    }
+    50% {
+        transform: translateY(-20px);        
+    }
+}
+.pg-banner-heading h1 {
+    font-size: 50px;
+    font-weight: 900;
+    color: var(--pg-white);
+    text-transform: capitalize;
+    max-width: 1000px;
+    width: 100%;
+    margin: auto;
+}
+.pg-banner-heading h4 {
+    font-size: 35px;
+    font-weight: 700;
+    color: var(--pg-primary-color);
+    text-transform: capitalize;
+}
+.pg-banner-content {
+    padding: 80px 0;
+    max-width: 750px;
+    width: 100%;
+    margin: auto;
+}
+.pg-banner-content h4 {
+    background-image: url(../images/banner-text-bg.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    font-size: 30px;
+    font-weight: 600;
+    color: #09050D;
+    text-transform: capitalize;
+    padding: 35px 20px; 
+}
+.pg-banner-content h4 span{
+    color: var(--pg-primary-color);
+}
+.pg-banner-img img {
+    display: block;
+    margin: auto;
+}
+/* Banner Section CSS End */
+
+/* Youtube Thumb Section CSS Start */
+.pg-youtbe-wrapper{
+    background-image: url(../images/thumb-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 80px 0;
+    overflow-x: hidden;
+}
+.pg-yt-thmb-heading .pg-heading {
+    max-width: 870px;
+    width: 100%;
+    margin: 0 auto 50px auto;
+}
+.pg-yt-thmb-content h4 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--pg-white);
+    text-transform: capitalize;
+    max-width: 410px;
+    width: 100%;
+}
+/* Youtube Thumb Section CSS End */
+
+/* Social Section CSS Start */
+.pg-social-wrapper{
+    background-image: url(../images/social-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 80px 0;
+    overflow-x: hidden;
+}
+.pg-tags-box {
+    background: #101119; 
+    text-align: center;
+    padding: 72px 0px 15px;
+    max-width: 810px;
+    width: 100%;
+    margin: 60px auto 0;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+h2.pg-tag-heading {
+    display: inline-block;
+    min-width: 580px;
+    background: #9F07FC;
+    box-shadow: 10px 10px 21px rgba(159, 7, 252, 0.19);
+    border-radius: 50px;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--pg-white);
+    position: absolute;
+    top: -33px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 0;
+}
+.pg-tag-box-inner ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.pg-tag-box-inner ul li { 
+    margin-bottom: 30px;
+    flex: 0 0 25%;
+}
+.pg-tag-box-inner ul li a{
+    display: inline-block;
+    min-width: 150px;
+    padding: 10px 20px;
+    background: linear-gradient(180deg, #FF779D 0%, #FF3B72 100%);
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--pg-white);
+    text-transform: capitalize;
+    transition: var(--pg-transition);
+}
+.pg-tag-box-inner ul li a:hover{
+    transform: translateY(-5px);
+}
+/* Social Section CSS End */
+
+/* Templates Section CSS Start */
+.pg-templates-wrapper{
+    background: #191825;
+    padding-top: 80px;
+}
+.pg-templates-wrapper .pg-heading{
+    text-align: center;
+    padding-bottom: 50px;
+}
+.pg-templates-wrapper .pg-heading h1{
+    font-size: 80px;
+    font-weight: 700;
+    color:var(--pg-white);
+}
+.pg-templates-wrapper .pg-heading h4{
+    font-size: 34px;
+    font-weight: 700;
+    color:var(--pg-white);
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+}
+/* Templates Section CSS End */
+
+/* Graphic Section CSS Start */
+.pg-graphic-wrapper{
+    background-image: url(../images/graphic-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 80px 0;   
+    overflow-x: hidden; 
+}
+/* Graphic Section CSS End */
+
+/* Website Section CSS Start */
+.pg-website-wrapper{
+    background-image: url(../images/website-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 80px 0;  
+    overflow-x: hidden;  
+}
+/* Website Section CSS End */
+
+/* Video Section CSS Start */
+.pg-video-wrapper{
+    background-image: url(../images/video-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 80px 0;
+    position: relative;
+    z-index: 1;
+    overflow-x: hidden;
+}
+.pg-video-wrapper:before{
+    content:'';
+    background-image: url(../images/video-shape.png);
+    background-repeat: no-repeat;
+    background-position: center;        
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    animation:4s installation infinite alternate;
+}
+.pg-video-box {
+    max-width: 1030px;
+    width: 100%;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(7px);
+    border-radius: 10px;
+    padding: 40px;
+    position: relative;
+}
+.pg-video-box:before {
+    content: '';
+    max-width: 1000px;
+    width: 100%;
+    height: 229px;
+    background: linear-gradient(180deg, #FF779D 0%, #FF3B72 100%);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    margin: auto;
+    z-index: -1;    
+}
+.pg-video {
+    font-size: 0;
+    position: relative;
+}
+.pg-video img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: shadow-pulse 2s infinite;
+    border-radius: 50%;
+}
+@keyframes shadow-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgb(255 255 255 / 70%)
+    }
+    100% {
+        box-shadow: 0 0 0 30px rgb(255 255 0 / 0%);        
+    }
+}
+.pg-video video {
+    max-width: 950px;
+    width: 100%;
+    height: 543px;
+    margin: auto;
+    border-radius: 10px; 
+}
+.pg-video {
+    max-width: 950px;
+    width: 100%;
+    height: 543px;
+    margin: auto;
+    border-radius: 10px; 
+    position: relative;
+}
+.pg-video:before{
+    content: '';
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+/* Video Section CSS End */
+
+/* Typography Section CSS Start */
+.pg-typography-wrapper{
+    background-image: url(../images/typography-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0;
+    overflow-x: hidden;
+}
+/* Typography Section CSS End */
+
+/* Library Section CSS Start */
+.pg-library-wrapper{
+    background-image: url(../images/library-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0;
+    overflow-x: hidden;
+}
+.pg-library-wrapper .pg-heading {
+    max-width: 700px;
+    width: 100%;
+}
+/* Library Section CSS End */
+
+/* Editing Section CSS Start */
+.pg-editing-wrapper{
+    background-image: url(../images/editing-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0;
+    overflow-x: hidden;
+}
+/* Editing Section CSS End */
+
+/* Customize Section CSS Start */
+.pg-customize-wrapper{
+    background-image: url(../images/customize-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0;
+    overflow-x: hidden;
+}
+/* Customize Section CSS End */
+
+/* Copyright CSS Start */
+.pg-copyright {
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    background: #130911;
+}
+.pg-copyright p {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--pg-white);
+    margin-bottom: 0;
+    padding: 0 15px;
+}
+/* Copyright CSS End */
+
+/** Top Button CSS **/
+
+#scroll {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 40px;
+    z-index: 9;
+    visibility: hidden;    
+    background: var(--pg-primary-color);
+    color: var(--pg-white);
+    font-size: 40px;
+    border-radius: 50%;
+}
+
+#scroll.active {
+    visibility: visible;    
+    animation: bounce 2s;
+    -webkit-animation: bounce 2s;
+    -moz-animation: bounce 2s;
+}
+
+#scroll img {
+    height: 30px;
+}
+
+@keyframes bounce {
+    0%,
+    100% {
+        transform: translateY(-20px);
+    }
+    50% {
+        transform: translateY(0px);
+    }
+}
+/* ================= Responsive CSS Start ===================== */
+@media(min-width:768px){
+    .pg-header-wrapper.sticky-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        right: 0;
+        box-shadow: 0px 3.99px 27px 0px rgb(255 255 255 / 5%);
+        transition: all 0.7s ease-in-out;
+        -webkit-animation: fadeInDown .7s;
+        -moz-animation: fadeInDown 0.7s;
+        -ms-animation: fadeInDown 0.7s;
+        -o-animation: fadeInDown 0.7s;
+        animation: fadeInDown 0.7s;
+        backface-visibility: hidden;
+    }
+    .sticky-header .pg-menu ul li a {
+        padding: 30px 0;
+    }
+    .sticky-header .pg-menu ul li:last-child a {
+        padding: 10px 0;
+    }
+}
+
+@media(max-width:1199px){
+    .pg-video-box:before {
+        max-width: 910px;
+    }   
+}
+@media(max-width:991px){
+    .pg-menu ul li {     
+        margin-right: 20px;
+    }
+    .pg-yt-thmb-content {
+        text-align: center;
+    }
+    .pg-yt-thmb-content h4 {
+        margin: auto;
+    }
+    .pg-paragraph {
+        margin: auto;
+        padding-top: 10px;
+    }
+    .pg-social-wrapper .row.mobile-clm-reverse {
+        flex-direction: column-reverse;
+    }
+    .pg-tags-box {
+        max-width: 100%;
+        margin: 60px auto 0;
+        padding-bottom: 0;
+    }  
+    .pg-tag-box-inner ul li {     
+        flex: 0 0 33.33%;
+    }         
+    .pg-tags-box {
+        background-image: none;
+        background: #111119;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .pg-tag-box-inner ul {     
+        justify-content: flex-start;        
+    }
+    .pg-video-box {
+        padding: 20px;
+    }
+    .pg-video-box:before {
+        max-width: 675px;
+        height: 150px;
+        bottom: 10px;
+    }
+}
+@media(max-width:767px){
+    .pg-header-parent {     
+        flex-direction: column;
+        padding: 20px 0;
+    }    
+    .pg-menu {
+        margin-left: 0;
+        text-align: center;
+    }
+    .pg-menu ul li a {
+        padding: 30px 0;
+    }      
+    .pg-banner-heading h1 {
+        font-size: 30px;
+        font-weight: 700;     
+    }  
+    .pg-banner-heading h4 {
+        font-size: 25px;
+    }
+    .pg-banner-heading h1 span {        
+        font-weight: 800;
+    }
+    .pg-banner-content {
+        padding: 40px 0;
+        max-width: 100%;             
+    }
+    .pg-banner-content h4 {
+        font-size: 25px;
+        padding: 19px;
+    }
+    .pg-heading {
+        font-size: 30px;
+        font-weight: 600;     
+    }
+    .pg-tag-box-inner ul li {
+        flex: 0 0 50%;
+    }
+    h2.pg-tag-heading {     
+        min-width: 500px;
+        font-size: 17px;
+        font-weight: 600;
+    }
+    .pg-video-box {
+        padding: 10px;
+    }
+    .pg-video-box:before {
+        max-width: 505px;
+        height: 100px;
+        bottom: 5px;
+    }
+    .pg-video {
+        height: 300px;
+    }
+    .pg-video:before {
+        height: 300px;
+    }
+    .pg-video video {
+        height: 300px;
+    }
+    .pg-templates-wrapper .pg-heading h1 {
+        font-size: 50px;     
+    }
+    .pg-templates-wrapper .pg-heading h4 {
+        font-size: 25px;
+    }
+}
+@media(max-width:575px){
+    .pg-video-box:before{
+        display: none;
+    }
+    h2.pg-tag-heading {
+        min-width: 400px;     
+    }
+}
+@media(max-width:525px){
+    .pg-banner-content h4 {
+        font-size: 20px;
+        padding: 24px;
+    }
+}
+@media(max-width:480px){
+    .pg-video, .pg-video:before, .pg-video video{
+        height: 250px;
+    }     
+}
+@media(max-width:425px){
+    .pg-banner-wrapper, .pg-youtbe-wrapper {
+        padding: 50px 0;
+    }    
+    .pg-copyright {
+        margin-top: 50px;     
+    }
+    .pg-banner-content {
+        padding: 15px 0;     
+    }
+    .pg-banner-content h4 {
+        font-size: 16px;
+        padding: 24px;
+    }
+    .pg-banner-heading h1, .pg-heading{
+        font-size: 25px;
+        font-weight: 600;
+    }
+    .pg-yt-thmb-heading .pg-heading {     
+        margin: 0 auto 30px auto;
+    }
+    .pg-shape-heading {
+        font-size: 22px;
+        padding: 20px 0;
+        margin: 0 0 30px 0;
+    }    
+    .pg-copyright p {
+        font-size: 14px;
+    }
+    h2.pg-tag-heading {
+        min-width: 350px;
+    }
+    .pg-menu ul li {
+        margin-right: 10px;
+    }
+}
+@media(max-width:375px){
+    .pg-banner-content h4 {
+        font-size: 15px;     
+    }
+    .pg-shape-heading {
+        font-size: 20px;
+        padding: 18px 0;     
+    }
+    h2.pg-tag-heading {
+        min-width: 300px;
+        font-weight: 14px;
+    }
+    .pg-tag-box-inner ul li a {
+        min-width: 130px;
+        padding: 7px 10px;
+        font-size: 14px;
+    }   
+    .pg-video, .pg-video:before, .pg-video video{
+        height: 250px;
+    } 
+}
+/* ================= Responsive CSS End ===================== */
