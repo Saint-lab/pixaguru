@@ -32,21 +32,21 @@
                   <?php echo html_escape($this->lang->line('ltr_auth_l_title')); ?>
             </h2>
             <p>
-                 <?php echo html_escape($this->lang->line('ltr_auth_l_subtitle')); ?>
+                  <?php echo html_escape($this->lang->line('ltr_auth_l_subtitle')); ?>
             </p>
         </div>
         <div class="pg-auth-form">
             <div class="pg-input-wrap">
-                <label><?php echo html_escape($this->lang->line('ltr_auth_l_mail_title')); ?></label>
+                <span><?php echo html_escape($this->lang->line('ltr_auth_l_mail_title')); ?></span>
                 <div class="pg-input-has-icon">
-                    <img src="<?php echo base_url(); ?>assets/images/auth/mail-icon.png" alt="">
+                    <img src="<?php echo base_url(); ?>assets/images/auth/mail.svg" alt="">
                     <input type="text" value="<?php echo isset($email) ? $email : '' ?>" id="ed_email">
                 </div>
             </div>
             <div class="pg-input-wrap">
-                <label><?php echo html_escape($this->lang->line('ltr_auth_l_pws_title')); ?></label>
+                <span><?php echo html_escape($this->lang->line('ltr_auth_l_pws_title')); ?></span>
                 <div class="pg-input-has-icon">
-                    <img src="<?php echo base_url(); ?>assets/images/auth/pws-icon.png" alt="">
+                    <img src="<?php echo base_url(); ?>assets/images/auth/pws.svg" alt="">
                     <input type="password" value="<?php echo isset($password) ? $password : '' ?>" id="ed_password">
                 </div>
             </div>
@@ -65,6 +65,16 @@
         </div>
         <div class="pg-auth-note">
             <p> <?php echo html_escape($this->lang->line('ltr_auth_l_acc_title')); ?> <a href="<?php echo base_url(); ?>authentication/subscription_plan"> <?php echo html_escape($this->lang->line('ltr_auth_l_register_btn')); ?></a></p>
+        </div>
+        <div class="panel">
+          <div class="content">
+                <h3>Welcome to PixaGuru</h3>
+                <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
+                ex ratione. Aliquid!
+                </p>
+          </div>
+          <img src="<?php echo base_url(); ?>assets/images/auth/undraw-iconblue.svg" class="image" alt="" />
         </div>
     </div>
 </div>
