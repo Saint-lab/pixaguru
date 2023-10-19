@@ -1,0 +1,16 @@
+.home-search-bg {
+    height: 17.5rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    background: linear-gradient(0deg, #1483af 0%, #87CEEB 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+.home-search-bg .nav-link {
+    color: white !important;
+}
