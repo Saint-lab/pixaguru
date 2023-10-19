@@ -32,21 +32,37 @@
                   <?php echo html_escape($this->lang->line('ltr_auth_l_title')); ?>
             </h2>
             <p>
+<<<<<<< HEAD
                   <?php echo html_escape($this->lang->line('ltr_auth_l_subtitle')); ?>
+=======
+                 <?php echo html_escape($this->lang->line('ltr_auth_l_subtitle')); ?>
+>>>>>>> jee
             </p>
         </div>
         <div class="pg-auth-form">
             <div class="pg-input-wrap">
+<<<<<<< HEAD
                 <span><?php echo html_escape($this->lang->line('ltr_auth_l_mail_title')); ?></span>
                 <div class="pg-input-has-icon">
                     <img src="<?php echo base_url(); ?>assets/images/auth/mail.svg" alt="">
+=======
+                <label><?php echo html_escape($this->lang->line('ltr_auth_l_mail_title')); ?></label>
+                <div class="pg-input-has-icon">
+                    <img src="<?php echo base_url(); ?>assets/images/auth/mail-icon.png" alt="">
+>>>>>>> jee
                     <input type="text" value="<?php echo isset($email) ? $email : '' ?>" id="ed_email">
                 </div>
             </div>
             <div class="pg-input-wrap">
+<<<<<<< HEAD
                 <span><?php echo html_escape($this->lang->line('ltr_auth_l_pws_title')); ?></span>
                 <div class="pg-input-has-icon">
                     <img src="<?php echo base_url(); ?>assets/images/auth/pws.svg" alt="">
+=======
+                <label><?php echo html_escape($this->lang->line('ltr_auth_l_pws_title')); ?></label>
+                <div class="pg-input-has-icon">
+                    <img src="<?php echo base_url(); ?>assets/images/auth/pws-icon.png" alt="">
+>>>>>>> jee
                     <input type="password" value="<?php echo isset($password) ? $password : '' ?>" id="ed_password">
                 </div>
             </div>
@@ -66,6 +82,7 @@
         <div class="pg-auth-note">
             <p> <?php echo html_escape($this->lang->line('ltr_auth_l_acc_title')); ?> <a href="<?php echo base_url(); ?>authentication/subscription_plan"> <?php echo html_escape($this->lang->line('ltr_auth_l_register_btn')); ?></a></p>
         </div>
+<<<<<<< HEAD
         <div class="panel">
           <div class="content">
                 <h3>Welcome to PixaGuru</h3>
@@ -76,6 +93,8 @@
           </div>
           <img src="<?php echo base_url(); ?>assets/images/auth/undraw-iconblue.svg" class="image" alt="" />
         </div>
+=======
+>>>>>>> jee
     </div>
 </div>
 <?php } ?>
