@@ -22,6 +22,7 @@
 	<!-- Template BLogs -->
 	<div class="row ed_prepend_template ed_template_grid pg-template-grid-row">
 		<?php if(count($templates)){ ?>
+			rrr
 			<?php for($i=0;$i<count($templates);$i++){ ?>
 				<div class="template_grid_item pg-template-box ed_template_remove">
 					<div class="pg-template-box-inner">

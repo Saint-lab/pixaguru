@@ -594,7 +594,7 @@ a {
     align-items: center;
     grid-gap: 20px;
     width: 100%;
-    padding: 12px 20px 12px 50px;
+    padding: 12px 20px 12px 30px;
     font-weight: 500;
     border-radius: 5px;
     color: var(--pixaguru-title-color);

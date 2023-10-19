@@ -84,7 +84,8 @@ class Images extends CI_Controller {
 
 		$this->load->view('common/header',$header);
 
-		$this->load->view('prebuild_templates', $data);
+		// $this->load->view('prebuild_templates', $data);
+		$this->load->view('home', $data);
 
 		$this->load->view('common/footer');
 
