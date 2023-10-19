@@ -23,7 +23,6 @@ class Common_DML extends CI_Model {
 		$query = $this->db->get();
         return $query->result_array();   
     }
-<<<<<<< HEAD
 
     public function get_data_row( $table_name, $where = array(), $field = '*', $order = array() ){
         $this->db->select( $field );
@@ -39,8 +38,6 @@ class Common_DML extends CI_Model {
 		$query = $this->db->get();
         return $query->row();   
     }
-=======
->>>>>>> jee
     
     public function put_data( $table_name, $what = array() ){
         $this->db->insert($table_name,$what);
