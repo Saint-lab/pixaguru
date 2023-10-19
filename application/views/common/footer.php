@@ -19,6 +19,11 @@
 		<script src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script> 
 		<script src="<?php echo base_url(); ?>assets/js/main.js?q=<?= date('is') ?>"></script>	
 		<script> 
+
+		// Added by jee
+		<script src="<?php echo base_url(); ?>assets/js/dashboard_carousel.js?q=<?= date('is') ?>"></script>	
+		<script> 
+		
 		/**
 		 * Color Switcher
 		 */ 

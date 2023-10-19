@@ -1,5 +1,32 @@
 <div class="pg-screen-container">
 
+	<?php 
+		function get_url($studio, $type="") {
+			if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
+				$url = "https://";   
+			else  
+				$url = "http://";   
+			// Append the host(domain name, ip) to the URL.   
+			$url.= $_SERVER['HTTP_HOST'];   
+			
+			// Append the requested resource location to the URL   
+			$url.= $_SERVER['REQUEST_URI'];   
+			
+			$end = strpos($url, "?");
+
+			$url = substr($url, 0, $end);
+
+			echo strpos($url, "?");
+				
+			return $url."?studio=".$studio."&type=".$type;
+		}
+
+		function feature_box($title, $studio, $type="") {
+			echo '<a href="'.get_url($studio, $type).'" class="home-option">'.$title.'</a>';
+		}
+
+	?>
+
 	<div class="home-search-bg">
 
 		<div>
@@ -19,30 +46,64 @@
 		<div class="nav-section">
 			<ul class="nav justify-content-center">
 				<li class="nav-item">
-					<a style="color: white;"  class="nav-link active" aria-current="page" href="#"> Graphics Studio </a>
+					<a style="color: white;"  class="nav-link" aria-current="page" href="<?php echo get_url("graphics", "all") ?>"> Graphics Studio </a>
 				</li>
 				<li class="nav-item">
-					<a style="color: white;"  class="nav-link" href="#"> Mockup Studio </a>
+					<a style="color: white;"  class="nav-link" href="<?php echo get_url("mockup") ?>"> Mockup Studio </a>
 				</li>
 				<li class="nav-item">
-					<a style="color: white;"  class="nav-link" href="#"> BoxShot Studio </a>
+					<a style="color: white;"  class="nav-link" href="<?php echo get_url("boxshot") ?>"> BoxShot Studio </a>
 				</li>
 				<li class="nav-itm">
-					<a style="color: white;"  class="nav-link active" aria-current="page" href="#"> Bundle/GroupShot Studio </a>
+					<a style="color: white;"  class="nav-link" aria-current="page" href="<?php echo get_url("bundle") ?>"> Bundle/GroupShot Studio </a>
 				</li>
 				<li class="nav-item">
-					<a style="color: white;"  class="nav-link" href="#"> Logo Studio </a>
+					<a style="color: white;"  class="nav-link" href="<?php echo get_url("logo") ?>"> Logo Studio </a>
 				</li>
 				<li class="nav-item">
-					<a style="color: white;"  class="nav-link" href="#"> AI Photo Editing Studio </a>
+					<a style="color: white;"  class="nav-link" href="<?php echo get_url("ai") ?>"> AI Photo Editing Studio </a>
 				</li>
 			</ul>
 		</div>
 
 	</div>
 
+	<?php
+		if ($_GET['studio'] === "graphics") {
+			echo("<div style='margin-top: 50px;'>");
+				echo("<div class='home-options'>");
+					feature_box("All Templates", "graphics", "all");
+					feature_box("Social Media", "graphics", "social");
+					feature_box("Video", "graphics", "video");
+					feature_box("Ads", "graphics", "ads");
+					feature_box("eCover", "graphics", "e-cover");
+					feature_box("Website/Funnel", "graphics", "funnel");
+					feature_box("Presentation", "graphics", "presentation");
+					feature_box("Business Cards", "graphics", "business-cards");
+					feature_box("Others", "graphics", "others");
+				echo("</div>");
+			echo("</div>");
+		} else if ($_GET['studio'] === "ai") {
+			echo("<div style='margin-top: 50px;'>");
+				echo("<div class='home-options'>");
+					feature_box("Background Remover", "ai", "bg-remover");
+					feature_box("Add White Background", "ai", "white-bg");
+					feature_box("Image Compression", "ai", "img-compression");
+					feature_box("Image Cropper", "ai", "img-cropper");
+					feature_box("Image Colorizer", "ai", "img-colorizer");
+					feature_box("Image Enlargement", "ai", "img-enlargement");
+					feature_box("Image To Text", "ai", "img-to-text");
+					feature_box("Image Editing Studio", "ai", "image-editing-studio");
+					feature_box("Photo Enhancement", "ai", "photo-enchancement");
+					feature_box("Photo Retouch", "ai", "photo-retouch");
+				echo("</div>");
+		}
+	?>
+
 
 	<div style="margin-top: 50px;">
+
+		<h4> Templates </h4>
 
 		<div class="pg-template-conteiner pg-append-template-row">
 			<?php if(count($templates)){ ?>

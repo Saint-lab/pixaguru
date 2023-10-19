@@ -10,7 +10,46 @@
 }
 
 
+.home-search-bg .nav-link:active {
+    background-color: whitesmoke;
+    color:  #1483af !important;
+    border-top-right-radius: 0.4rem;
+    border-top-left-radius: 0.4rem;
+}
+
+
+.home-search-bg  .nav-link:hover {
+    background-color: whitesmoke;
+    color:  #1483af !important;
+    border-top-right-radius: 0.4rem;
+    border-top-left-radius: 0.4rem;
+}
 
 .home-search-bg .nav-link {
     color: white !important;
+}
+
+.home-options {
+    display: flex;
+    gap: 0.4rem;
+}
+
+.home-option {
+    height: 8rem;
+    width: 8rem;
+    background-color: #EBEEF0;
+    border-radius: 0.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.home-option:hover {
+    background-color: #666A6E;
+    color: white;
+}
+
+.home-option {
+    text-align: center;
 }
