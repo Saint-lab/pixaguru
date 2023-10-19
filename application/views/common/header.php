@@ -15,6 +15,16 @@
 		<link href="<?php echo base_url(); ?>assets/css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
 		<link href="<?php echo base_url(); ?>assets/css/style.css?q=1" rel="stylesheet">
         <link href="#" id="drag_mode" rel="stylesheet">
+        <style>
+    .containerdd {
+      max-width: 450px;
+    }
+    .imgGallery img {
+      padding: 3px;
+      max-width: 250px;
+      max-height: 200px;
+    }    
+  </style>
         <?php 
         $where = array('data_key' =>'google_analytics_header_script');
         $result_header_script = $this->Common_DML->get_data( 'theme_setting', $where);

@@ -86,7 +86,7 @@ class Images extends CI_Controller {
 
 		$this->load->view('prebuild_templates', $data);
 
-		$this->load->view('common/footer');
+		$this->load->view('common/footer'); 
 
 	}
 
@@ -364,6 +364,233 @@ class Images extends CI_Controller {
 		 echo "Not Found !";	
 		endif;
 	}
+
+	// Image Effects session
+
+	public function imageBkRemoverGet(){
+    $header = array();
+		$header['menu'] = 'Background Remover';
+		$this->load->view('common/header',$header);
+		$this->load->view('img/bkremover');
+		$this->load->view('common/footer');
+	}
+
+	public function imageBkRemoverPost(){
+		$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+      
+     if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/bkImage/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				
+				//$this->upload->initialize($config); 
+				
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+				
+ $ch = curl_init();
+  $headers  = [
+        'Content-Type: multipart/form-data',
+        'X-API-KEY: '.$key->api_key
+    ];
+  
+ $postData = [];
+ //$imgPath = $image_name;
+ $postData["sync"] = 1;
+$postData["image_file"] = new \CURLFile($image_name,$type,$fname);
+curl_setopt($ch, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/segmentation');
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); 
+
+  $output = curl_exec($ch);
+ $err = curl_error($ch);
+  curl_close($ch);
+   # Print any errors, to help with debugging.
+if ($err) {
+   echo "cURL Error #:" . $err;
+  }
+file_put_contents("imagebk".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imagebk".$this->g_userID.".data");
+$joutput=json_decode($foutput,true);
+if(isset($joutput)){
+     $path2 = './uploads/user_'.$userID.'/bkImage/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($joutput["data"]["url"]));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'colorization',
+       ];
+
+       $this->Common_DML->put_data('al_image', $query);
+
+       if (file_exists("imagebk".$this->g_userID.".data")) {
+    unlink("imagebk".$this->g_userID.".data");
+    }
+if (file_exists($image_name)) {
+    unlink($image_name);
+    }
+
+}
+   
+redirect( 'images/imageBkRemoverGet', 'refresh' );
+
+			}
+}
+
+public function imageColorizationGet(){
+    $header = array();
+		$header['menu'] = 'Colorization';
+		$this->load->view('common/header',$header);
+		$this->load->view('img/color');
+		$this->load->view('common/footer');
+	}
+
+public function imageColorizationPost(){
+  
+  	$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+
+     if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/colorImage/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				
+				//$this->upload->initialize($config); 
+				
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+				
+ $ch = curl_init();
+  $headers  = [
+        'Content-Type: multipart/form-data',
+        'X-API-KEY: '.$key->api_key
+    ];
+  
+ $postData = [];
+ //$imgPath = $image_name;
+ $postData["sync"] = 1;
+$postData["image_file"] = new \CURLFile($image_name,$type,$fname);
+curl_setopt($ch, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/colorization');
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); 
+
+  $output = curl_exec($ch);
+ $err = curl_error($ch);
+  curl_close($ch);
+   # Print any errors, to help with debugging.
+if ($err) {
+   echo "cURL Error #:" . $err;
+  }
+file_put_contents("imagecolor".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imagecolor".$this->g_userID.".data");
+$joutput=json_decode($foutput,true);
+if(isset($joutput)){
+     $path2 = './uploads/user_'.$userID.'/colorImage/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($joutput["data"]["url"]));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'colorization',
+       ];
+
+       $this->Common_DML->put_data('al_image', $query);
+
+       if (file_exists("imagecolor".$this->g_userID.".data")) {
+    unlink("imagecolor".$this->g_userID.".data");
+    }
+if (file_exists($image_name)) {
+    unlink($image_name);
+    }
+
+}
+   
+redirect( 'images/imageColorizationGet', 'refresh' );
+
+			}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
