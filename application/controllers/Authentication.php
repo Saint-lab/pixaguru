@@ -181,7 +181,7 @@ class Authentication extends CI_Controller {
 		}else{
 			redirect( 'authentication', 'refresh' );
 		}
-	}
+	} 
 	public function reset(){
 		if(isset($_POST['password']) && !empty(html_escape($_POST['password'])) && !empty(html_escape($_POST['user_id']))){
 			$what = array( 'password' => md5(html_escape($_POST['password'])), 'code' => '' );

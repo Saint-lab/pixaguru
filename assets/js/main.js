@@ -711,7 +711,7 @@ jQuery(document).ready(function($) {
 
 	$('#redirect_bundle').on('change',function(e){
 		e.preventDefault();
-		if($(this).val() != 'custom'){
+		if($(this).val() != 'custom'){ 
 			var url = ajaxurl + 'images/size/' + $(this).val();
 			window.location = url;
 		}else{

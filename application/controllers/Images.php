@@ -367,18 +367,19 @@ class Images extends CI_Controller {
 
 	// Image Effects session
 
-	public function imageBkRemoverGet(){
+	public function bkRemove(){
     $header = array();
 		$header['menu'] = 'Background Remover';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'bkremover') );
 		$this->load->view('common/header',$header);
-		$this->load->view('img/bkremover');
+		$this->load->view('img/bkremover', $data);
 		$this->load->view('common/footer');
 	}
 
-	public function imageBkRemoverPost(){
+	public function bkRemovePost(){
 		$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
      $image_name = "";
-      
+
      if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -409,74 +410,175 @@ class Images extends CI_Controller {
 				   $fname = $this->upload->data()['file_name'];
 				}
 				
- $ch = curl_init();
-  $headers  = [
-        'Content-Type: multipart/form-data',
-        'X-API-KEY: '.$key->api_key
-    ];
-  
- $postData = [];
- //$imgPath = $image_name;
- $postData["sync"] = 1;
-$postData["image_file"] = new \CURLFile($image_name,$type,$fname);
-curl_setopt($ch, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/segmentation');
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-  curl_setopt($ch, CURLOPT_POST, 1);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); 
-
-  $output = curl_exec($ch);
- $err = curl_error($ch);
-  curl_close($ch);
-   # Print any errors, to help with debugging.
-if ($err) {
-   echo "cURL Error #:" . $err;
-  }
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/segmentation');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('sync' => 1,'image_file' => new CURLFILE($image_name)));
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+$response = json_decode($output , true);
+if($response != NULL){
+if(strpos($response['data']['image'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['image']);
+  	}else{
+$output = $response['data']['image'];
+}
 file_put_contents("imagebk".$this->g_userID.".data",$output);
 $foutput=file_get_contents("imagebk".$this->g_userID.".data");
-$joutput=json_decode($foutput,true);
-if(isset($joutput)){
+if(isset($foutput) && $foutput != ""){
      $path2 = './uploads/user_'.$userID.'/bkImage/generated/';
         if (!file_exists($path2)) {
     mkdir($path2, 0777, true);
 }
  $temp = time();
-file_put_contents($path2.$temp."image.png", file_get_contents($joutput["data"]["url"]));
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
  $query = [
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
            //'original' => $image_name,
-           'type' => 'colorization',
+           'type' => 'bkremover',
        ];
-
        $this->Common_DML->put_data('al_image', $query);
-
-       if (file_exists("imagebk".$this->g_userID.".data")) {
+      if (file_exists("imagebk".$this->g_userID.".data")) {
     unlink("imagebk".$this->g_userID.".data");
     }
-if (file_exists($image_name)) {
-    unlink($image_name);
+if (file_exists($path.$name)) {
+    unlink($path.$name);
     }
 
 }
    
-redirect( 'images/imageBkRemoverGet', 'refresh' );
+redirect( 'images/bkRemove', 'refresh' );
 
+			}else{
+			redirect( 'images/bkRemove', 'refresh' );	
 			}
-}
 
-public function imageColorizationGet(){
+		}
+
+		}
+
+
+public function addWhiteBk(){
     $header = array();
-		$header['menu'] = 'Colorization';
+		$header['menu'] = 'Add White Background';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'whitebk') );
 		$this->load->view('common/header',$header);
-		$this->load->view('img/color');
+		$this->load->view('img/whitebk', $data);
 		$this->load->view('common/footer');
 	}
 
-public function imageColorizationPost(){
+	public function addWhiteBkPost(){
+		$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+
+     if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/whiteBk/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				
+				//$this->upload->initialize($config); 
+				
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+				
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/segmentation');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('sync' => 1,'image_file' => new CURLFILE($image_name)));
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+$response = json_decode($output , true);
+if($response != NULL){
+if(strpos($response['data']['image'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['image']);
+  	}else{
+$output = $response['data']['image'];
+}
+file_put_contents("imagewhitebk".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imagewhitebk".$this->g_userID.".data");
+if(isset($foutput) && $foutput != ""){
+     $path2 = './uploads/user_'.$userID.'/whiteBk/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'whitebk',
+       ];
+       $this->Common_DML->put_data('al_image', $query);
+      if (file_exists("imagewhitebk".$this->g_userID.".data")) {
+    unlink("imagewhitebk".$this->g_userID.".data");
+    }
+if (file_exists($path.$name)) {
+    unlink($path.$name);
+    }
+
+}
+   
+redirect( 'images/addWhiteBk', 'refresh' );
+
+			}else{
+			redirect( 'images/addWhiteBk', 'refresh' );	
+			}
+
+		}
+
+		}
+
+ 
+
+
+public function colorization(){
+    $header = array();
+		$header['menu'] = 'Colorization';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'colorization') );
+		$this->load->view('common/header',$header);
+		$this->load->view('img/color', $data);
+		$this->load->view('common/footer');
+	}
+
+public function colorizationPost(){
   
   	$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
      $image_name = "";
@@ -500,9 +602,6 @@ public function imageColorizationPost(){
 				$config['max_size']       = 10240;
 				
 				$this->load->library('upload', $config);
-				
-				//$this->upload->initialize($config); 
-				
 				if ( ! $this->upload->do_upload('fileUpload')){
 					$result = array('error' => $this->upload->display_errors());
 				}else{
@@ -511,41 +610,34 @@ public function imageColorizationPost(){
 				   $fname = $this->upload->data()['file_name'];
 				}
 				
- $ch = curl_init();
-  $headers  = [
-        'Content-Type: multipart/form-data',
-        'X-API-KEY: '.$key->api_key
-    ];
-  
- $postData = [];
- //$imgPath = $image_name;
- $postData["sync"] = 1;
-$postData["image_file"] = new \CURLFile($image_name,$type,$fname);
-curl_setopt($ch, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/colorization');
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-  curl_setopt($ch, CURLOPT_POST, 1);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $postData); 
-
-  $output = curl_exec($ch);
- $err = curl_error($ch);
-  curl_close($ch);
-   # Print any errors, to help with debugging.
-if ($err) {
-   echo "cURL Error #:" . $err;
-  }
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/colorization');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('sync' => 1,'file' => new CURLFILE($image_name)));
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+$response = json_decode($output , true);
+if(strpos($response['data']['image'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['image']);
+  	}else{
+$output = $response['data']['image'];
+}
 file_put_contents("imagecolor".$this->g_userID.".data",$output);
 $foutput=file_get_contents("imagecolor".$this->g_userID.".data");
-$joutput=json_decode($foutput,true);
-if(isset($joutput)){
+if(isset($foutput)){
      $path2 = './uploads/user_'.$userID.'/colorImage/generated/';
         if (!file_exists($path2)) {
     mkdir($path2, 0777, true);
 }
  $temp = time();
-file_put_contents($path2.$temp."image.png", file_get_contents($joutput["data"]["url"]));
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
  $query = [
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
@@ -553,31 +645,675 @@ file_put_contents($path2.$temp."image.png", file_get_contents($joutput["data"]["
            //'original' => $image_name,
            'type' => 'colorization',
        ];
-
        $this->Common_DML->put_data('al_image', $query);
-
-       if (file_exists("imagecolor".$this->g_userID.".data")) {
+      if (file_exists("imagecolor".$this->g_userID.".data")) {
     unlink("imagecolor".$this->g_userID.".data");
     }
-if (file_exists($image_name)) {
-    unlink($image_name);
+if (file_exists($path.$name)) {
+    unlink($path.$name);
     }
 
 }
    
-redirect( 'images/imageColorizationGet', 'refresh' );
+redirect( 'images/colorization', 'refresh' );
 
 			}
 
+		}
+
+
+public function enhencement(){
+    $header = array();
+		$header['menu'] = 'Enhencement';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'enhencement') );
+		$this->load->view('common/header',$header);
+		$this->load->view('img/enhencement', $data);
+		$this->load->view('common/footer');
+	}
+
+public function enhencementPost(){
+  
+  	$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+
+     if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/enhencementImage/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+				
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/scale');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('sync' => 1, 'type' => 'face', 'image_file' => new CURLFILE($image_name)));
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+$response = json_decode($output , true);
+if(strpos($response['data']['image'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['image']);
+  	}else{
+$output = $response['data']['image'];
+}
+file_put_contents("imageenhec".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imageenhec".$this->g_userID.".data");
+if(isset($foutput)){
+     $path2 = './uploads/user_'.$userID.'/enhenceImage/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'enhencement',
+       ];
+       $this->Common_DML->put_data('al_image', $query);
+      if (file_exists("imageenhec".$this->g_userID.".data")) {
+    unlink("imageenhec".$this->g_userID.".data");
+    }
+if (file_exists($path.$name)) {
+    unlink($path.$name);
+    }
 
 }
+   
+redirect( 'images/enhencement', 'refresh' );
+
+			}
+
+		}		
 
 
 
+public function compression(){
+    $header = array();
+		$header['menu'] = 'Compression';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'compress') );
+		$this->load->view('common/header',$header);
+		$this->load->view('img/compression', $data);
+		$this->load->view('common/footer');
+	}
+
+public function compressionPost(){
+  
+  	$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+
+     if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/compressImage/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+				
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/imgcompress');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('sync' => 1, 'file' => new CURLFILE($image_name)));
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+$response = json_decode($output , true);
+if(strpos($response['data']['image'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['image']);
+  	}else{
+$output = $response['data']['image'];
+}
+file_put_contents("imagecompress".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imagecompress".$this->g_userID.".data");
+if(isset($foutput)){
+     $path2 = './uploads/user_'.$userID.'/compressImage/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'compress',
+       ];
+       $this->Common_DML->put_data('al_image', $query);
+      if (file_exists("imagecompress".$this->g_userID.".data")) {
+    unlink("imagecompress".$this->g_userID.".data");
+    }
+if (file_exists($path.$name)) {
+    unlink($path.$name);
+    }
+
+}
+   
+redirect( 'images/compression', 'refresh' );
+
+			}
+
+		}	
+
+
+public function croping(){
+    $header = array();
+		$header['menu'] = 'Croping';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'croping') );
+		$this->load->view('common/header',$header);
+		$this->load->view('img/croping', $data);
+		$this->load->view('common/footer');
+	}
+
+public function cropingPost(){
+  
+  	$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+
+     if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/cropingImage/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+				
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/correction');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('sync' => 1, 'image_file' => new CURLFILE($image_name)));
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+$response = json_decode($output , true);
+if(strpos($response['data']['image'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['image']);
+  	}else{
+$output = $response['data']['image'];
+}
+file_put_contents("imagecrop".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imagecrop".$this->g_userID.".data");
+if(isset($foutput)){
+     $path2 = './uploads/user_'.$userID.'/cropingImage/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'croping',
+       ];
+       $this->Common_DML->put_data('al_image', $query);
+      if (file_exists("imagecrop".$this->g_userID.".data")) {
+    unlink("imagecrop".$this->g_userID.".data");
+    }
+if (file_exists($path.$name)) {
+    unlink($path.$name);
+    }
+
+}
+   
+redirect( 'images/croping', 'refresh' );
+
+			}
+
+		}	
+
+
+public function imageToText(){
+    $header = array();
+		$header['menu'] = 'Croping';
+		$this->load->view('common/header',$header);
+		$this->load->view('img/textimage');
+		$this->load->view('common/footer');
+	}
+
+public function imageToTextPost(){
+  
+  	$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+
+     if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/imageToText/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+				
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/document/ocr');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('file' => new CURLFILE($image_name)));
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+var_dump($output);
+die();
+$response = json_decode($output , true);
+if(strpos($response['data']['task_id'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['task_id']);
+  	}else{
+$output = $response['data']['task_id'];
+}
+var_dump($output);
+die();
+file_put_contents("imagecrop".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imagecrop".$this->g_userID.".data");
+if(isset($foutput)){
+     $path2 = './uploads/user_'.$userID.'/cropingImage/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'croping',
+       ];
+      if (file_exists("imagecrop".$this->g_userID.".data")) {
+    unlink("imagecrop".$this->g_userID.".data");
+    }
+if (file_exists($path.$name)) {
+    unlink($path.$name);
+    }
+
+}
+   
+redirect( 'images/croping', 'refresh' );
+
+			}
+
+		}	
 
 
 
+public function objectRemover(){
+    $header = array();
+		$header['menu'] = 'ObjectRemover';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'objremover') );
+		$this->load->view('common/header',$header);
+		$this->load->view('img/objremover', $data);
+		$this->load->view('common/footer');
+	}
 
+public function objectRemoverPost(){
+  
+  	$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+
+     if(isset($_FILES['fileUpload1']) && !empty($_FILES['fileUpload1'])){
+				$filename = $_FILES['fileUpload1']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/objremover/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				if ( ! $this->upload->do_upload('fileUpload1')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name1 = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+		}
+
+if(isset($_FILES['fileUpload2']) && !empty($_FILES['fileUpload2'])){
+				$filename = $_FILES['fileUpload2']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/objremover/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				if ( ! $this->upload->do_upload('fileUpload2')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name2 = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+		}				
+				
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/inpaint');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array(
+'sync' => 1, 
+'rectangles'=>'[{"x": 0,"y": 0,"width": 100,"height": 100}]',
+'image_file' => new CURLFILE($image_name1), 
+'mask_file' => new CURLFILE($image_name2))
+);
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+$response = json_decode($output , true);
+if(strpos($response['data']['image'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['image']);
+  	}else{
+$output = $response['data']['image'];
+}
+file_put_contents("imageobj".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imageobj".$this->g_userID.".data");
+if(isset($foutput)){
+     $path2 = './uploads/user_'.$userID.'/objImage/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'objremover',
+       ];
+       $this->Common_DML->put_data('al_image', $query);
+      if (file_exists("imageobj".$this->g_userID.".data")) {
+    unlink("imageobj".$this->g_userID.".data");
+    }
+if (file_exists($path.$name)) {
+    unlink($path.$name);
+    }
+
+}
+   
+redirect( 'images/objremover', 'refresh' );
+
+			
+
+		}	
+
+
+
+public function idPhoto(){
+    $header = array();
+		$header['menu'] = 'ID Photo';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'idphoto') );
+		$this->load->view('common/header',$header);
+		$this->load->view('img/idphoto',$data);
+		$this->load->view('common/footer');
+	}
+
+public function idPhotoPost(){
+  
+  	$key = $this->Common_DML->get_data_row( 'api_table', array( 'user_id' => 1) );
+     $image_name = "";
+
+     if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = time().$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/idPhoto/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 10240;
+				
+				$this->load->library('upload', $config);
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					$image_name = $this->upload->data()['full_path'];
+				   $type = $this->upload->data()['file_type'];
+				   $fname = $this->upload->data()['file_name'];
+				}
+$size = '480x640';				
+				
+ $curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://techhk.aoscdn.com/api/tasks/visual/idphoto');
+curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+      "X-API-KEY: ".$key->api_key,
+      "Content-Type: multipart/form-data",
+));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($curl, CURLOPT_POSTFIELDS, array('sync' => 1,'size' => $size, 'image_file' => new CURLFILE($image_name)));
+$output = curl_exec($curl);
+$output = curl_errno($curl) ? curl_error($curl) : $output;
+curl_close($curl);
+var_dump($output);
+die();
+$response = json_decode($output , true);
+if(strpos($response['data']['image'], "\u0026") !== FALSE){
+	$output = str_replace("\u0026", "&", $response['data']['image']);
+  	}else{
+$output = $response['data']['image'];
+}
+var_dump($output);
+die();
+file_put_contents("imageid".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imageid".$this->g_userID.".data");
+if(isset($foutput)){
+     $path2 = './uploads/user_'.$userID.'/idImage/generated/';
+        if (!file_exists($path2)) {
+    mkdir($path2, 0777, true);
+}
+ $temp = time();
+file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
+ $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path2.$temp."image.png",
+           //'original' => $image_name,
+           'type' => 'idphoto',
+       ];
+       $this->Common_DML->put_data('al_image', $query);
+      if (file_exists("imageid".$this->g_userID.".data")) {
+    unlink("imageid".$this->g_userID.".data");
+    }
+if (file_exists($path.$name)) {
+    unlink($path.$name);
+    }
+
+}
+   
+redirect( 'images/idPhoto', 'refresh' );
+
+			}
+
+		}
+
+public function deleteGeneratedImage($id, $page="")
+{
+	$image = $this->Common_DML->get_data_row( 'al_image', array( 'id' => $id) );
+	if($image){
+	 	if (file_exists($image->image_url)) {
+    unlink($image->image_url);
+    }
+	$query = ['id' => $id];
+   $this->Common_DML->delete_data('al_image', $query);
+redirect( 'images/'.$page, 'refresh' );
+	}
+		
+}
+
+public function downloadGeneratedImage($id, $page="")
+{
+	$image = $this->Common_DML->get_data_row( 'al_image', array( 'id' => $id) );
+	if($image){
+	 if (file_exists($image->image_url)) {
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="'.basename($image->image_url).'"');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: '.filesize($image->image_url));
+		readfile($image->image_url);
+		exit;
+		}
+	
+redirect( 'images/'.$page, 'refresh' );
+	}
+		
+}
+
+public function imageLib(){
+     $this->load->view('common/header');
+		$this->load->view('img/imagelib');
+		$this->load->view('common/footer');
+    } 
+    
+    public function videoLib(){
+     $this->load->view('common/header');
+		$this->load->view('img/videolib');
+		$this->load->view('common/footer');
+    }
+
+public function imageToVideo(){
+     $this->load->view('common/header');
+		$this->load->view('img/imagevideo');
+		$this->load->view('common/footer');
+    }
 
 
 

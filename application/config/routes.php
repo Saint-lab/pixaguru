@@ -65,4 +65,6 @@ $route['admin/download'] = 'import_export_template/download';
 $route['admin/theme-setting'] = 'admin/theme_setting_option';   
 $route['admin/google-analytics'] = 'theme_setting/google_analytics_script'; 
 $route['admin/profile'] = 'admin/admin_profile';  
-$route['embed/template/(:any)'] = 'Images_loads_ajax/embed_code_template_images/$1';     
+$route['embed/template/(:any)'] = 'Images_loads_ajax/embed_code_template_images/$1';
+$route['delete/image/(:any)/(:any)'] = 'Images/deleteGeneratedImage/$1/$2';
+$route['download/image/(:any)/(:any)'] = 'Images/downloadGeneratedImage/$1/$2';     

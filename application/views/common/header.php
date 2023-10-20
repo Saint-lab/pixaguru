@@ -23,7 +23,12 @@
       padding: 3px;
       max-width: 250px;
       max-height: 200px;
-    }    
+    } 
+    .imgGallery2 img {
+      padding: 3px;
+      max-width: 250px;
+      max-height: 200px;
+    }   
   </style>
         <?php 
         $where = array('data_key' =>'google_analytics_header_script');

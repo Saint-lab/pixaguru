@@ -1,7 +1,7 @@
- <div class="pg-header-row" style="width: 1200px !important;">
+ <div class="pg-header-row" style="width: 1000px !important;">
   <div class="card col-md-4 p-3" style="margin-left: -30px!important;width: 300px !important;">
    <div class="containerdd mt-5">
-    <form action="<?php echo base_url(); ?>images/imageColorizationPost" method="post"  enctype="multipart/form-data" class="mb-3">
+    <form action="<?php echo base_url(); ?>images/colorizationPost" method="post"  enctype="multipart/form-data" class="mb-3">
       <h6 class="text-center mb-5">Colorization</h6>
 
       <div class="user-image mb-3 text-center">
@@ -33,7 +33,16 @@
             </tr>
           </thead>
           <tbody>
-            
+            <?php foreach ($images as $key => $image) { ?>
+              <tr>
+                <td><img src="<?= base_url($image['image_url']);?>" alt="Generated Image" style="width:100px;height: 80px;"></td>
+                              <td>
+                  <a href="<?= base_url('download/image/'.$image['id'].'/colorization'); ?>" class="btn btn-primary p-2">Download</a>
+                  <a href="<?= base_url('delete/image/'.$image['id'].'/colorization'); ?>" class="btn btn-danger p-2">Delete</a>
+                </td>
+              </tr>
+              
+          <?php  }   ?>
           </tbody>
         </table>
  </div>

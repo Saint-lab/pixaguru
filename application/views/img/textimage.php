@@ -1,9 +1,8 @@
- 
- <div class="pg-header-row" style="width: 1000px !important;">
+ <div class="pg-header-row" style="width: 1200px !important;">
   <div class="card col-md-4 p-3" style="margin-left: -30px!important;width: 300px !important;">
    <div class="containerdd mt-5">
-    <form action="<?php echo base_url(); ?>images/bkRemovePost" method="post"  enctype="multipart/form-data" class="mb-3">
-      <h6 class="text-center mb-5">Backgound Remover</h6>
+    <form action="<?php echo base_url(); ?>images/imageToTextPost" method="post"  enctype="multipart/form-data" class="mb-3">
+      <h6 class="text-center mb-5">Image To Text</h6>
 
       <div class="user-image mb-3 text-center">
         <div class="imgGallery"> 
@@ -22,8 +21,8 @@
     </form>
    </div>
  </div>
- <div class="col-md-8" style="width: 400px !important;">
-   <?php //var_dump($images); die();   ?>
+ <div class="col-md-8" style="width: 500px !important;">
+  
    <table class="dataTable pg-table">
           <thead>
             <tr>
@@ -34,16 +33,7 @@
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($images as $key => $image) { ?>
-              <tr>
-                <td><img src="<?= base_url($image['image_url']);?>" alt="Generated Image" style="width:100px;height: 80px;"></td>
-                              <td>
-                  <a href="<?= base_url('download/image/'.$image['id'].'/bkRemove'); ?>" class="btn btn-primary p-2">Download</a>
-                  <a href="<?= base_url('delete/image/'.$image['id'].'/bkRemove'); ?>" class="btn btn-danger p-2">Delete</a>
-                </td>
-              </tr>
-              
-          <?php  }   ?>
+            
           </tbody>
         </table>
  </div>
@@ -53,7 +43,7 @@
 
   <script>
     $(function() {
-    // Multiple images preview with JavaScript
+    
     var multiImgPreview = function(input, imgPreviewPlaceholder) {
 
         if (input.files) {
