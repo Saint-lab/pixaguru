@@ -37,7 +37,7 @@ Copyright (c) 2023
 body {
 	font-family: 'Nunito', sans-serif;
 	font-weight: 400;
-	font-size: 12px;
+	font-size: 15px;
 	line-height: 1.5;
 	color: var(--pixaguru-global-color);
 	background: var(--pixaguru-body-bg);
@@ -565,7 +565,7 @@ a {
     left: 0px;
     top: 50px;
     bottom: 0;
-    width: 320px;
+    width: 240px;
     z-index: 999;
     padding: 30px 15px 70px;
     height: 100vh;
@@ -594,7 +594,7 @@ a {
     align-items: center;
     grid-gap: 20px;
     width: 100%;
-    padding: 12px 20px 12px 50px;
+    padding: 12px 20px 12px 30px;
     font-weight: 500;
     border-radius: 5px;
     color: var(--pixaguru-title-color);
@@ -651,8 +651,8 @@ a {
 }
 /*--------------- Page Wrapper Style ---------------*/
 .pg-main-wrapper {
-    padding-left: 320px;
-    padding-top: 70px;
+    padding-left: 20px;
+    padding-top: 10px;
 }
 .pg-page-content {
     padding: 40px 30px;
@@ -3965,8 +3965,8 @@ h3.pg-sidebar-heading.pg-group-alignment-heading {
 		grid-gap: 10px;
 	}
 	.pg-main-wrapper {
-		padding-left: 500px;
-		padding-top: 120px;
+		padding-left: 250px;
+		padding-top: 60px;
 	}
 }
 

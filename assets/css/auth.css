@@ -7,19 +7,19 @@ Copyright (c) 2023
 :root {
     --pixaguru-global-color: #6a87a8;
     --pixaguru-body-bg: #eff5fc;
-    --pixaguru-primary: #ff5887;
+    --pixaguru-primary: #1483af;
     --pixaguru-white-color: #ffffff;
     --pixaguru-green-color: #8cdf5f;
     --pixaguru-title-color: #2c4767;
     --pixaguru-border-color: #edf3ff;
-    --pixaguru-gradient: linear-gradient(0deg, #ff3b72 0%, #ff779c 100%);
+    --pixaguru-gradient: linear-gradient(0deg, #1483af 0%, #87CEEB 100%);
 }
 body {
 	font-family: 'Nunito', sans-serif;
 	font-weight: 400;
 	font-size: 15px;
 	line-height: 1.5;
-	color: var(--pixaguru-global-color);
+	/* color: var(--pixaguru-global-color); */
 	background: var(--pixaguru-body-bg);
     margin: 0;
     padding: 0;
@@ -71,6 +71,7 @@ ul{
 }
 p {
   margin: 0px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 input:-webkit-autofill {
     background: transparent !important;
@@ -112,8 +113,9 @@ input:-webkit-autofill {
 }
 /*--------------- Auth Page Style ---------------*/
 .pg-auth-wrapper {
-    background-color: #e7eefe;
-    background-image: url(../images/auth/auth-bg.jpg);
+    /* background-color: #e7eefe;
+    background-image: url(../images/auth/auth-bg.jpg); */
+    background-color: #fff;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -122,7 +124,7 @@ input:-webkit-autofill {
     left: 0;
     right: 0;
     bottom: 0;
-    overflow: auto;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -130,27 +132,32 @@ input:-webkit-autofill {
 }
 .pg-auth-container {
     display: flex;
-    flex-wrap: wrap;
+    position: relative;
+    /* flex-wrap: wrap; */
     width: 100%;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
-    height: 100vh;
+    /* align-items: center;
+    justify-content: center; */
+    padding: 20px 20px;
+    height: 100%;
 }
 .pg-auth-row {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    width: 100%;
+    width: 50%;
     grid-gap: 0px;
+    /* top: 5%; */
+    left: 60%;
     max-width: 470px;
-    position: relative;
+    position: absolute;
     z-index: 1;
-    background: var(--pixaguru-white-color);
+    /* background: var(--pixaguru-white-color); */
     border-radius: 5px;
+    /* transform: translate(-50%, -50%); */
+
 }
 .pg-auth-row:before {
-    content: "";
+    /* content: "";
     position: absolute;
     left: -10px;
     right: -10px;
@@ -160,14 +167,53 @@ input:-webkit-autofill {
     background: var(--pixaguru-primary);
     height: 85%;
     border-radius: 5px;
-    background: var(--pixaguru-gradient);
+    background: var(--pixaguru-gradient); */
+    content: "";
+    position: absolute;
+    height: 1900px;
+    width: 1900px;
+    top: -10%;
+    right: 110%;
+    transform: translateY(-60%);
+    background-image: var(--pixaguru-gradient);
+    transition: 1.8s ease-in-out;
+    border-radius: 50%;
+    /* z-index: 6; */
+}
+
+.panel{
+    position: fixed;
+    top: 60px;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 50%;
+    /* height: 100%; */
+    gap: 20px;
+    text-align: center;
+    align-items: center;
+
+    
+}
+
+
+.panel .content, .panel .content h3{
+    text-align: center;
+    color: #fff;
+}
+.panel img{
+    width: 65%;
+    /* flex-grow: 2; */
+    /* height: 0%; */
+
 }
 .pg-auth-form-row-inner {
     padding: 60px 50px;
     position: relative;
     width: 100%;
     z-index: 1;
-    background: var(--pixaguru-white-color);
+    /* background: var(--pixaguru-white-color); */
     border-radius: 5px;
 }
 .pg-auth-form-wrapper {
@@ -192,12 +238,13 @@ input:-webkit-autofill {
 .pg-input-wrap {
     position: relative;
     margin: 0 0 20px;
+    color: #000;
 }
-.pg-input-wrap label {
+.pg-input-wrap span {
     position: absolute;
     top: 25px;
     left: 65px;
-    color: #bdc9d7;
+    color: #5b7899;
     transition: 0.1s;
     cursor: text;
     display: -webkit-box;
@@ -205,15 +252,16 @@ input:-webkit-autofill {
     -webkit-box-orient: vertical;
     overflow: hidden;
     font-size: 13px;
+    z-index: 2;
 }
-.pg-input-wrap.pg-input-value label {
+.pg-input-wrap.pg-input-value span {
     top: 15px;
 }
 .pg-input-wrap input {
     width: 100%;
     padding: 16px 20px 0px 65px;
     font-size: 15px;
-    background: transparent;
+    background: #f0f0f0;
     height: 68px;
     font-weight: 600;
     transition: 0.3s;

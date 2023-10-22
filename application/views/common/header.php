@@ -30,6 +30,12 @@
       max-height: 200px;
     }   
   </style>
+
+        <!-- style by jee -->
+        <link href="<?php echo base_url(); ?>assets/css/home.css?q=1" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <link href="#" id="drag_mode" rel="stylesheet">
         <?php 
         $where = array('data_key' =>'google_analytics_header_script');
         $result_header_script = $this->Common_DML->get_data( 'theme_setting', $where);
