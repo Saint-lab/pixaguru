@@ -1,9 +1,9 @@
 
-<form id="openai-form" action="" method="post" enctype="multipart/form-data" class="mt-24">   
+<form id="openai-form" action="<?php echo base_url(); ?>images/postAiImage" method="post" enctype="multipart/form-data" class="mt-24">   
 
   <div class="row"> 
     <div class="col-lg-4 col-md-12 col-sm-12">
-      <div class="card border-0" id="template-input">
+      <div class="card" style="border-top: solid 3px #4b8ed1;border-right: 0;border-bottom: 0;border-left: 0">
         <div class="card-body p-5 pb-0">
 
           <div class="row">
@@ -30,7 +30,7 @@
               <div class="input-box"> 
                 <h6 class="fs-11 mb-2 font-weight-semibold">Image Description  <span class="text-required"><i class="fa-solid fa-asterisk"></i></span></h6>                 
                 <div class="form-group">                
-                  <textarea rows="5" cols="50" class="form-control" id="title" name="title" placeholder="e.g. Spaceship flying to the moon" required></textarea>
+                  <textarea rows="3" cols="50" class="form-control" id="title" name="title" placeholder="e.g. Spaceship flying to the moon" required></textarea>
                   
                 </div> 
               </div> 
@@ -222,7 +222,7 @@
     </div>
 
     <div class="col-lg-8 col-md-12 col-sm-12">
-      <div class="card border-0">
+      <div class="card" style="border-top: solid 3px #4b8ed1;border-right: 0;border-bottom: 0;border-left: 0">
         <div class="card-body">
           <div class="d-flex">
             <div class="w-100">
@@ -240,9 +240,51 @@
                 <th width="5%">Actions</th>
               </tr>
             </thead>
+            <tbody>
+              <?php foreach ($images as $key => $image) { ?>
+              <tr>
+                <td><img src="<?= base_url($image['image_url']);?>" alt="Generated Image" style="width:100px;height: 80px;cursor: pointer;" class="viewBtn" data-img="<?= base_url($image['image_url']);?>"></td>
+                <td>
+                  <?= $image['original'] ?>
+                </td>
+                              <td>
+                  <a href="<?= base_url('download/image/'.$image['id'].'/getAiImages'); ?>" class="btn btn-primary p-2">Download</a>
+                  <a href="<?= base_url('delete/image/'.$image['id'].'/getAiImages'); ?>" class="btn btn-danger p-2">Delete</a>
+                </td>
+              </tr>
+              
+          <?php  }   ?>
+            </tbody>
         </table> <!-- END SET DATATABLE --> 
         </div>
       </div>
     </div>
   </div>
 </form>
+
+<div id="updateBtn" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Generated Image</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                     <div style="width:100%;">
+                   
+                     <img src="" id="model_img" style="width:100%; height:auto;padding:4px;">   
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+<script type="text/javascript">
+  $('.viewBtn').on('click', function () {
+            var modal = $('#updateBtn');
+           var lmg = $(this).data('img');
+            $("#model_img").attr("src", lmg);
+           modal.modal('show');
+        });
+</script>
