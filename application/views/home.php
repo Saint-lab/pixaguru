@@ -35,7 +35,7 @@
 	<div class="home-search-bg">
 
 		<div>
-		<i class="fa fa-eye" aria-hidden="true"></i>
+			
 		</div>
 
 
@@ -73,14 +73,15 @@
 
 	</div>
 
+
 	<?php
 		if (isset($_GET['studio']) != 1  || $_GET['studio'] === "graphics") {
 			echo("<div style='margin-top: 50px;'>");
 				echo("<div class='home-options'>");
 					feature_box("All Templates", "Fetch all templates", '<i class="fa-solid fa-house" style="color: #ec2913;"></i>', "graphics", "all");
-					feature_box("Social Media", "", "graphics", "social");
-					feature_box("Video", "", "graphics", "video");
-					feature_box("Ads", "", "graphics", "ads");
+					feature_box("Social Media", "Fetch all templates", '<i class="fa-solid fa-house" style="color: #ec2913;"></i>', "graphics", "social");
+					feature_box("Video", "Fetch all templates", '<i class="fa-solid fa-house" style="color: #ec2913;"></i>', "graphics", "video");
+					feature_box("Ads", "Fetch all templates", '<i class="fa-solid fa-house" style="color: #ec2913;"></i>', "graphics", "ads");
 					// feature_box("eCover", "graphics", "e-cover");
 					// feature_box("Website/Funnel", "graphics", "funnel");
 					// feature_box("Presentation", "graphics", "presentation");
