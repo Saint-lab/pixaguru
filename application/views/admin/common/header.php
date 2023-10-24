@@ -199,6 +199,10 @@
                         </a>
                     </li>
                     <li>
+                       <a class="" href="<?php echo base_url() ?>admin/uploadeMedia">
+                       Upload Media </a> 
+                    </li>
+                    <li>
                         <a class="<?php echo isset($subscription_list) ? html_escape($subscription_list) : ''; ?>" href="<?php echo base_url() ?>subscription/subscription_list">
                             <span class="pg-nav-icon">
                                 <svg width="23" height="23" viewBox="0 0 23 23">

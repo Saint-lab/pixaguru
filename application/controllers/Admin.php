@@ -103,7 +103,8 @@ class Admin extends CI_Controller {
 	}
     /**
 	 * Admin All User Data Loads
-	 */
+	 */ 
+
 	public function get_user($page = 0){
 		$page = isset($_REQUEST['start']) ? html_escape($_REQUEST['start']) : html_escape($page);
 		$length = isset($_REQUEST['length']) ? $_REQUEST['length'] : 10;
@@ -712,6 +713,77 @@ class Admin extends CI_Controller {
     			}
     		}
 		}
+    }
+
+    public function uploadeMedia()
+    {
+    	$data['images'] = $this->Common_DML->get_data( 'user_templates', array( 'user_id'=>$this->g_userID, 'type'=> 'croping') );
+    	$data['images'] = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$this->g_userID." AND `campaign_id` = 1 AND `status` = 1 AND `type` != '' AND `template_id` NOT IN(1,2) ORDER BY `template_id` DESC LIMIT 0,30" );
+    	$this->load->view('admin/common/header');
+		$this->load->view('admin/uploadmedia', $data);
+		$this->load->view('admin/common/footer');
+    }
+
+    public function uploadmediaPost()
+    {
+    	$type = isset($_POST['type'])?html_escape($_POST['type']):'';
+    	$tname = isset($_POST['name'])?html_escape($_POST['name']):'';
+    	if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
+				$filename = $_FILES['fileUpload']['name'];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$ext = empty($ext) ? 'jpg' : $ext;
+				$name = $type.'-'.time().'.'.$ext;
+				$userID = $this->g_userID;
+				if(!$userID) return false;
+				$path = './uploads/user_'.$userID.'/mediaFiles/'.$type.'/';
+				      if (!file_exists($path)) {
+                         mkdir($path, 0777, true);
+                       }
+					
+				$config['upload_path']  	= $path;
+				$config['file_name']  	= $name;
+				$config['overwrite']  	= true;
+				$config['allowed_types']  = 'jpg|png|jpeg';
+				$config['max_size']       = 102400;
+				
+				$this->load->library('upload', $config);
+				
+				//$this->upload->initialize($config); 
+				
+				if ( ! $this->upload->do_upload('fileUpload')){
+					$result = array('error' => $this->upload->display_errors());
+				}else{
+					
+				}
+			}
+         $what = array(
+				'user_id' => $this->g_userID,
+				'campaign_id' => 1,
+				'cat_id' => 1,
+				'template_name' => $tname,
+				'thumb' =>  $path.$name,
+				'datetime' => date('Y-m-d H:i:s'),
+				'status' => 1,
+				'access_level' => 1,
+				'template_access_leavel' => 1,
+				'type' => $type,
+			);
+			$insert_id = $this->Common_DML->put_data( 'user_templates', $what );
+		redirect( 'admin/uploadeMedia', 'refresh' );	
+
+    }
+
+    public function deleteMedia($id)
+    {
+    	$image = $this->Common_DML->get_data_row( 'user_templates', array( 'template_id' => $id) );
+	if($image){
+	 	if (file_exists($image->thumb)) {
+    unlink($_SERVER['DOCUMENT_ROOT'].$image->thumb);
+    }
+	$query = ['template_id' => $id];
+   $this->Common_DML->delete_data('user_templates', $query);
+redirect( 'admin/uploadeMedia', 'refresh' );
+	}
     }
   
 }

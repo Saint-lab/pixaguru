@@ -1316,7 +1316,48 @@ public function imageToVideo(){
 		$this->load->view('common/footer');
     }
 
+public function getAiImages()
+{
+	$this->load->view('common/header');
+	$this->load->view('img/ia_image');
+	$this->load->view('common/footer');
+}
 
+public function postAiImage()
+{
+	$max_results = isset($_POST['max_results'])?html_escape((int)$_POST['max_results']):'';
+          
+
+            $prompt = isset($_POST['title'])?html_escape($_POST['title']):'';
+            
+            if ($_POST['style'] != 'none') {
+                $prompt .= ', ' . html_escape($_POST['style']); 
+            } 
+            
+            if (html_escape($_POST['lightning']) != 'none') {
+                $prompt .= ', ' . html_escape($_POST['lightning']); 
+            } 
+            
+            if (html_escape($_POST['artist']) != 'none') {
+                $prompt .= ', ' . html_escape($_POST['artist']); 
+            }
+            
+            if (html_escape($_POST['medium']) != 'none') {
+                $prompt .= ', ' . html_escape($_POST['medium']); 
+            }
+            
+            if (html_escape($_POST['mood']) != 'none') {
+                $prompt .= ', ' .html_escape($_POST['mood']); 
+            }
+
+
+            $complete = [
+                    'prompt' => $prompt,
+                    'size' => $request->resolution,
+                    'n' => $max_results,
+                    "response_format" => "url",
+                ];
+}
 
 
 
