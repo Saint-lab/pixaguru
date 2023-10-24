@@ -36,8 +36,7 @@ class Images extends CI_Controller {
 
 	}
 
-	public function size( $size = '1200x628' ){
-
+	public function size( $size = '1200x628'){
 		$access_level = $this->session->userdata( 'access_level' );
 
 		$data = array();

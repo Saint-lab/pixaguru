@@ -30,26 +30,55 @@
 }
 
 .home-options {
-    display: flex;
-    gap: 0.4rem;
+    display: block;
+    overflow-x: scroll;
+    width: 100%;
 }
 
 .home-option {
-    height: 8rem;
-    width: 8rem;
-    background-color: #EBEEF0;
+    height: 128px;
+    width: 256px;
     border-radius: 0.6rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: inline-block;
+    padding: 1.25rem;
+    background-color: white;
+    border-style: groove;
+    border-color:  #d5dfe9;
+    border-width: 1px;
+    color: #666A6E;
 }
 
 
-.home-option:hover {
+.home-option:hover  {
     background-color: #666A6E;
+    color: white;
+    height: 8.1rem;
+    width: 16.1rem;
+}
+
+.home-option:hover >* {
     color: white;
 }
 
-.home-option {
-    text-align: center;
+
+
+.home-option h4 {
+    margin-top: 0.6rem;
+    font-weight: 900;
+    color: black;
+    font-size: 18px;
+}
+
+.home-option p {
+    font-weight: 300;
+    font-size: 12px;
+}
+
+.home-option i {
+    font-family: "Font Awesome 5 Free";
+    content: "\f00c";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
 }
