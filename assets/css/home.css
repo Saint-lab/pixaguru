@@ -30,16 +30,15 @@
 }
 
 .home-options {
-    display: block;
-    overflow-x: scroll;
+    display: flex;
     width: 100%;
+    gap: 10px;
 }
 
 .home-option {
     height: 128px;
     width: 256px;
     border-radius: 0.6rem;
-    display: inline-block;
     padding: 1.25rem;
     background-color: white;
     border-style: groove;

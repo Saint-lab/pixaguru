@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Images extends CI_Controller {
+class Studio extends CI_Controller {
 
 	private $g_userID;
 
@@ -27,72 +27,41 @@ class Images extends CI_Controller {
 		}
 
 		
-
 	}
 
-	public function index(){
 
-		$this->size( '1200x628' );
+	public function mockup($campaign_id = '', $template_id = '', $sub_user_id = '')	{
 
-	}
-
-	public function size( $size = '1200x628' ){
-
-		$access_level = $this->session->userdata( 'access_level' );
-
-		$data = array();
-
-		$userID = $this->g_userID;
-
-		$adminUserID = $this->Common_DML->get_data( 'users', array('role'=>'admin'), 'id' );
-
-		$pre_templates = $pre_templates_count = array();
-
-		$templates = $this->Common_DML->get_data( 'user_templates', array( 'user_id'=>$userID, 'save_as_template'=>1, 'status'=>1 ) );
-
-		if(!empty($adminUserID)){
-
-			$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND template_size = '".$size."' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
-
-			$pre_templates_count = $this->Common_DML->query( "SELECT COUNT(*) as total FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND template_size = '".$size."' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC" );
-
-			$templates_count = $this->Common_DML->query( "SELECT COUNT(*) as total FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC" );
-
-			$template_size_count = $this->Common_DML->query('SELECT template_size, COUNT(*) as tot FROM `user_templates` WHERE `user_id` = '.$adminUserID[0]['id'].' AND `campaign_id` = 1 AND status = 1 AND `template_id` NOT IN(1,2) GROUP BY template_size');
-
+		if($template_id !='' && $campaign_id != ''){
+			$data = array();
+			$userID = $this->g_userID;
+			$data['images'] = $this->Common_DML->get_data_limit( 'user_image', array( 'user_id' => $userID ), '*', array(0,21), 'id','DESC' );
+			
+			if(isset($sub_user_id) && !empty($sub_user_id)){
+				$sub_users = $this->Common_DML->get_data( 'sub_users', array('parent_user_id'=>$userID,'sub_user_id'=>$sub_user_id,'status'=>1) );
+				if(count($sub_users) == 1){
+					$userID = $sub_user_id;
+				}
+			}
+			
+			$data['userID'] = $userID;
+			$data['template'] = $this->Common_DML->get_data( 'user_templates', array( 'user_id' => $userID, 'campaign_id' => $campaign_id, 'template_id' => $template_id, 'status' => 1 ), '*', array() );
+			$data['theme_setting'] = $this->Common_DML->get_data( 'theme_setting', '', '*', array() );
+			
+			$data['template_id'] = $template_id;
+			$data['campaign_id'] = $campaign_id;
+			$data['suggestion_category'] = $this->Common_DML->get_data( 'suggestion_category' );
+		
+			if(empty($data['template'])) redirect( 'dashboard', 'refresh' );
+			//$this->load->view( 'editor', $data );
 		}
-
-		$campaigns = $this->Common_DML->get_data( 'campaign', array( 'user_id' => $userID ) );
-
-		$data['templates'] = array_merge($pre_templates, $templates);
-
-		$data['campaigns'] = $campaigns;
-
-		$data['size'] = $size;
-
-		$data['template_size_count'] = $template_size_count;
-
-		$data['sizetotal'] = !empty($pre_templates_count) ? $pre_templates_count[0]['total'] : 0;
-
-		$data['total'] = 3137;
-
-		$data['subcat'] = $this->Common_DML->get_data( 'sub_category', array( 'cat_id' => 1, 'sub_cat_id !=' => 8 ) );
-
-		$header = array();
-
-		$header['menu'] = 'images';
-
-		$this->load->view('common/header',$header);
-
-		// $this->load->view('prebuild_templates', $data);
-		$this->load->view('home', $data);
-
-		$this->load->view('common/footer');
-
+		
+		$this->load->view('studios/header');
+		$this->load->view('studios/mockup', $data);
+		$this->load->view('common/footer');	
 	}
 
 
-
 }
 
 
@@ -107,13 +76,4 @@ class Images extends CI_Controller {
 
 
 
-
-
-
-
-
-
-
-
-}
 

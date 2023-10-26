@@ -3,19 +3,7 @@
 	<?php 
 	
 		function get_url($studio, $type="") {
-			if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
-				$url = "https://";   
-			else  
-				$url = "http://";   
-			// Append the host(domain name, ip) to the URL.   
-			$url.= $_SERVER['HTTP_HOST'];   
-			
-			// Append the requested resource location to the URL   
-			$url.= $_SERVER['REQUEST_URI'];   
-			
-			$end = strpos($url, "?");
-				
-			return $url."?studio=".$studio."&type=".$type;
+			return base_url()."images?studio=".$studio."&type=".$type;
 		}
 
 		function feature_box($title, $description, $icon, $studio, $type="") {
@@ -35,7 +23,7 @@
 	<div class="home-search-bg">
 
 		<div>
-			
+
 		</div>
 
 
@@ -219,11 +207,11 @@
 				<input type="hidden" id="template_userID" value="">
 				<input type="hidden" id="get_template_id" value="">
 				<input type="hidden" id="m_template_size" value="<?php echo $size; ?>">
+				<input type="hidden" id="m_template_studio" value="<?php echo $_GET['studio']; ?>">
                 <a href="#" class="pg-btn pg-btn-lg" id="ed_create_template"> <?php echo html_escape($this->lang->line('ltr_prebuild_temp_create_btn')); ?></a> 
             </div>
         </div> 
     </div>
-
 
 
 

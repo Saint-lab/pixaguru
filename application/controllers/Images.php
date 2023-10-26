@@ -37,6 +37,9 @@ class Images extends CI_Controller {
 	}
 
 	public function size( $size = '1200x628'){
+		$option = isset($_GET['type'])?$_GET['type']:'';
+		$studio = isset($_GET['studio'])?$_GET['studio']:'';
+
 		$access_level = $this->session->userdata( 'access_level' );
 
 		$data = array();
@@ -60,6 +63,44 @@ class Images extends CI_Controller {
 			$template_size_count = $this->Common_DML->query('SELECT template_size, COUNT(*) as tot FROM `user_templates` WHERE `user_id` = '.$adminUserID[0]['id'].' AND `campaign_id` = 1 AND status = 1 AND `template_id` NOT IN(1,2) GROUP BY template_size');
 
 		}
+        
+		if(isset($studio) == 1 && $studio != "")	{
+
+			if	($studio == "mockup") { 
+			
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'mockup' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+			
+			}	else if ($studio == "boxshot") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'boxshot' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}	else if ($studio == "bundle") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'bundle' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}	else if ($studio == "logo") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'logo' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}	else if ($studio == "ai") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'ai' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}	else if ($studio == "graphics") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = '' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}
+
+
+		} else {
+
+			$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = '' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+		}
+
+
+		
 
 		$campaigns = $this->Common_DML->get_data( 'campaign', array( 'user_id' => $userID ) );
 
@@ -183,6 +224,8 @@ class Images extends CI_Controller {
         $template_id = '';
         $userID = $this->g_userID;
 
+		$campaign_type = html_escape($_POST['template_studio']);
+
 		if(!empty($_POST['campaign_name'])){
 
 			$campaign_name = html_escape($_POST['campaign_name']);
@@ -208,7 +251,7 @@ class Images extends CI_Controller {
 			$template_name = html_escape($_POST['template_name']);
             $get_template_id = html_escape($_POST['get_template_id']);
             $template_userID = html_escape($_POST['template_userID']);
-            $template_data = $this->Common_DML->get_data( 'user_templates', array( 'user_id' => $template_userID, 'template_id' => $get_template_id, 'status' => 1 ), 'template_data,template_size,cat_id,sub_cat_id', array() );
+            $template_data = $this->Common_DML->get_data( 'user_templates', array( 'user_id' => $template_userID, 'template_id' => $get_template_id, 'status' => 1 ), 'template_data,template_size,cat_id,sub_cat_id,thumb', array() );
             if(!empty($template_data)){
 
 				$what = $template_data[0];
@@ -222,14 +265,28 @@ class Images extends CI_Controller {
 				$what['campaign_id'] = $campaign_id;
 
 				$what['datetime'] = $date;
+				$what['thumb'] = $template_data[0]['thumb'];
 
 				$what['modifydate'] = $date;
 
 				$what['status'] = 1;
 
+				$what['type'] = $campaign_type;
+
 				$template_id = $this->Common_DML->put_data( 'user_templates', $what );
 
-				$url = base_url() . 'editor/edit/'.$campaign_id.'/'.$template_id;
+				switch ($campaign_type) {
+					case "mockup":
+						$url = base_url() . 'studio/mockup/'.$campaign_id.'/'.$template_id;
+						break;
+					case "boxshot":
+						$url = base_url() . 'editor/edit/'.$campaign_id.'/'.$template_id;
+						break;
+					default:
+						$url = base_url() . 'editor/edit/'.$campaign_id.'/'.$template_id;
+				}
+
+
 
 				echo json_encode( array( 'status' => 1, 'msg' =>html_escape($this->lang->line('ltr_images_campaign_template_msg1')), 'url' => $url ) );
 
@@ -1356,16 +1413,7 @@ public function postAiImage()
                     'n' => $max_results,
                     "response_format" => "url",
                 ];
-}
-
-
-
-
-
-
-
-
-
+	}
 
 
 
