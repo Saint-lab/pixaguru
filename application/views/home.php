@@ -8,14 +8,16 @@
 
 		function feature_box($title, $description, $icon, $studio, $type="") {
 			echo '<a href="'.get_url($studio, $type).'" class="home-option">';
-
 				echo '<i class="fa fa-eye" aria-hidden="true"></i>';
-			
 				echo '<h4>'.$title.'</h4>';
-
 				echo '<p>'.$description.'</p>';
-			
 			echo '</a>';
+		}
+
+		function active($studio) {
+			$type = $_GET['studio'];
+			if (isset($type) != 1 && $studio == "graphics") return "active";
+			return $type == $studio ? "active" : "";
 		}
 
 	?>
@@ -39,7 +41,7 @@
 		<div class="nav-section">
 			<ul class="nav justify-content-center">
 				<li class="nav-item">
-					<a style="color: white;"  class="nav-link" aria-current="page" href="<? echo  get_url("graphics")  ?>"> Graphics Studio </a>
+					<a style="color: white;" class="<? echo active("graphics")." nav-link"?>" aria-current="page" href="<? echo  get_url("graphics")  ?>"> Graphics Studio </a>
 				</li>
 				<li class="nav-item">
 					<a style="color: white;"  class="nav-link" href="<?php echo get_url("mockup") ?>"> Mockup Studio </a>
@@ -84,12 +86,12 @@
 					feature_box("Add White Background", "", "ai", "white-bg");
 					feature_box("Image Compression", "",  "ai", "img-compression");
 					feature_box("Image Cropper", "",  "ai", "img-cropper");
-					feature_box("Image Colorizer", "",  "ai", "img-colorizer");
-					feature_box("Image Enlargement", "",  "ai", "img-enlargement");
-					feature_box("Image To Text", "",  "ai", "img-to-text");
-					feature_box("Image Editing Studio", "",  "ai", "image-editing-studio");
-					feature_box("Photo Enhancement", "",  "ai", "photo-enchancement");
-					feature_box("Photo Retouch", "",  "ai", "photo-retouch");
+					// feature_box("Image Colorizer", "",  "ai", "img-colorizer");
+					// feature_box("Image Enlargement", "",  "ai", "img-enlargement");
+					// feature_box("Image To Text", "",  "ai", "img-to-text");
+					// feature_box("Image Editing Studio", "",  "ai", "image-editing-studio");
+					// feature_box("Photo Enhancement", "",  "ai", "photo-enchancement");
+					// feature_box("Photo Retouch", "",  "ai", "photo-retouch");
 				echo("</div>");
 		}
 	?>
@@ -212,7 +214,5 @@
             </div>
         </div> 
     </div>
-
-
 
 </div>
