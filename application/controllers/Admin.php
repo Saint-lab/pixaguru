@@ -728,6 +728,7 @@ class Admin extends CI_Controller {
     {
     	$type = isset($_POST['type'])?html_escape($_POST['type']):'';
     	$tname = isset($_POST['name'])?html_escape($_POST['name']):'';
+		
     	if(isset($_FILES['fileUpload']) && !empty($_FILES['fileUpload'])){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);

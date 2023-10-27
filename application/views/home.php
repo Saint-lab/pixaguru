@@ -1,28 +1,21 @@
 <div class="pg-screen-container">
 
 	<?php 
+	
 		function get_url($studio, $type="") {
-			if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')   
-				$url = "https://";   
-			else  
-				$url = "http://";   
-			// Append the host(domain name, ip) to the URL.   
-			$url.= $_SERVER['HTTP_HOST'];   
-			
-			// Append the requested resource location to the URL   
-			$url.= $_SERVER['REQUEST_URI'];   
-			
-			$end = strpos($url, "?");
-
-			$url = substr($url, 0, $end);
-
-			echo strpos($url, "?");
-				
-			return $url."?studio=".$studio."&type=".$type;
+			return base_url()."images?studio=".$studio."&type=".$type;
 		}
 
-		function feature_box($title, $studio, $type="") {
-			echo '<a href="'.get_url($studio, $type).'" class="home-option">'.$title.'</a>';
+		function feature_box($title, $description, $icon, $studio, $type="") {
+			echo '<a href="'.get_url($studio, $type).'" class="home-option">';
+
+				echo '<i class="fa fa-eye" aria-hidden="true"></i>';
+			
+				echo '<h4>'.$title.'</h4>';
+
+				echo '<p>'.$description.'</p>';
+			
+			echo '</a>';
 		}
 
 	?>
@@ -46,7 +39,7 @@
 		<div class="nav-section">
 			<ul class="nav justify-content-center">
 				<li class="nav-item">
-					<a style="color: white;"  class="nav-link" aria-current="page" href="<?php echo get_url("graphics", "all") ?>"> Graphics Studio </a>
+					<a style="color: white;"  class="nav-link" aria-current="page" href="<? echo  get_url("graphics")  ?>"> Graphics Studio </a>
 				</li>
 				<li class="nav-item">
 					<a style="color: white;"  class="nav-link" href="<?php echo get_url("mockup") ?>"> Mockup Studio </a>
@@ -68,34 +61,35 @@
 
 	</div>
 
+
 	<?php
-		if ($_GET['studio'] === "graphics") {
+		if (isset($_GET['studio']) != 1  || $_GET['studio'] === "graphics") {
 			echo("<div style='margin-top: 50px;'>");
 				echo("<div class='home-options'>");
-					feature_box("All Templates", "graphics", "all");
-					feature_box("Social Media", "graphics", "social");
-					feature_box("Video", "graphics", "video");
-					feature_box("Ads", "graphics", "ads");
-					feature_box("eCover", "graphics", "e-cover");
-					feature_box("Website/Funnel", "graphics", "funnel");
-					feature_box("Presentation", "graphics", "presentation");
-					feature_box("Business Cards", "graphics", "business-cards");
-					feature_box("Others", "graphics", "others");
+					feature_box("All Templates", "Fetch all templates", '<i class="fa-solid fa-house" style="color: #ec2913;"></i>', "graphics", "all");
+					feature_box("Social Media", "Fetch all templates", '<i class="fa-solid fa-house" style="color: #ec2913;"></i>', "graphics", "social");
+					feature_box("Video", "Fetch all templates", '<i class="fa-solid fa-house" style="color: #ec2913;"></i>', "graphics", "video");
+					feature_box("Ads", "Fetch all templates", '<i class="fa-solid fa-house" style="color: #ec2913;"></i>', "graphics", "ads");
+					// feature_box("eCover", "graphics", "e-cover");
+					// feature_box("Website/Funnel", "graphics", "funnel");
+					// feature_box("Presentation", "graphics", "presentation");
+					// feature_box("Business Cards", "graphics", "business-cards");
+					// feature_box("Others", "graphics", "others");
 				echo("</div>");
 			echo("</div>");
 		} else if ($_GET['studio'] === "ai") {
 			echo("<div style='margin-top: 50px;'>");
 				echo("<div class='home-options'>");
-					feature_box("Background Remover", "ai", "bg-remover");
-					feature_box("Add White Background", "ai", "white-bg");
-					feature_box("Image Compression", "ai", "img-compression");
-					feature_box("Image Cropper", "ai", "img-cropper");
-					feature_box("Image Colorizer", "ai", "img-colorizer");
-					feature_box("Image Enlargement", "ai", "img-enlargement");
-					feature_box("Image To Text", "ai", "img-to-text");
-					feature_box("Image Editing Studio", "ai", "image-editing-studio");
-					feature_box("Photo Enhancement", "ai", "photo-enchancement");
-					feature_box("Photo Retouch", "ai", "photo-retouch");
+					feature_box("Background Remover", "", "ai", "bg-remover");
+					feature_box("Add White Background", "", "ai", "white-bg");
+					feature_box("Image Compression", "",  "ai", "img-compression");
+					feature_box("Image Cropper", "",  "ai", "img-cropper");
+					feature_box("Image Colorizer", "",  "ai", "img-colorizer");
+					feature_box("Image Enlargement", "",  "ai", "img-enlargement");
+					feature_box("Image To Text", "",  "ai", "img-to-text");
+					feature_box("Image Editing Studio", "",  "ai", "image-editing-studio");
+					feature_box("Photo Enhancement", "",  "ai", "photo-enchancement");
+					feature_box("Photo Retouch", "",  "ai", "photo-retouch");
 				echo("</div>");
 		}
 	?>
@@ -213,11 +207,11 @@
 				<input type="hidden" id="template_userID" value="">
 				<input type="hidden" id="get_template_id" value="">
 				<input type="hidden" id="m_template_size" value="<?php echo $size; ?>">
+				<input type="hidden" id="m_template_studio" value="<?php echo $_GET['studio']; ?>">
                 <a href="#" class="pg-btn pg-btn-lg" id="ed_create_template"> <?php echo html_escape($this->lang->line('ltr_prebuild_temp_create_btn')); ?></a> 
             </div>
         </div> 
     </div>
-
 
 
 
