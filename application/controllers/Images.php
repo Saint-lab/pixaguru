@@ -88,19 +88,17 @@ class Images extends CI_Controller {
 
 			}	else if ($studio == "graphics") {
 
-				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = '' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
 
 			}
 
 
 		} else {
 
-			$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = '' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+			$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
 
 		}
 
-
-		
 
 		$campaigns = $this->Common_DML->get_data( 'campaign', array( 'user_id' => $userID ) );
 

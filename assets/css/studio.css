@@ -24,29 +24,17 @@
     position: absolute;
     background-color: green;
 
+    /* top: 142.4px;
+    height: 219px;
+    width: 310px;
+    margin-right: 2px; */
+
     /* top: 178px;
     height: 170px;
     width: 304px; */
 
     /* Mockup properties */
-    /* top: 140px;
-    height: 260px;
-    width: 370px;
-    margin-left: 34px;
-    border-radius: 8px;
-    /* transform: rotate(4deg); */
-    /* transform: perspective(500px) rotateY(-10deg) rotateZ(-3deg) skewX(-30deg);  */
-    /* transform: perspective(500px) skewX(-4deg) skewY(10deg);  */ 
-    
-    /* transform: rotateY(10deg); */
 
-
-    /* transform: rotate(30deg, 30deg, 30deg); */
-    /* transform: rotateZ(-0.4deg) */
-
-
-    /* transform: rotateY(-4deg);
-    transform: skewX(0.021deg); */
 }
 
 
@@ -77,6 +65,11 @@ Mockup properties
     margin-right: 18px;
     border-radius: 8px;
     transform: rotateZ(-0.4deg)
+5. Painting
+    top: 142.4px;
+    height: 219px;
+    width: 310px;
+    margin-right: 2px;
 
 
 */

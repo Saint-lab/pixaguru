@@ -12,7 +12,7 @@
 
 .home-search-bg .nav-link:active {
     background-color: whitesmoke;
-    color:  #1483af !important;
+    color:  red !important;
     border-top-right-radius: 0.4rem;
     border-top-left-radius: 0.4rem;
 }
@@ -73,11 +73,3 @@
     font-size: 12px;
 }
 
-.home-option i {
-    font-family: "Font Awesome 5 Free";
-    content: "\f00c";
-    display: inline-block;
-    padding-right: 3px;
-    vertical-align: middle;
-    font-weight: 900;
-}
