@@ -226,7 +226,7 @@
 							</div>
 							<!-- Grid Toggle Button  -->
 						</div>
-						<canvas id="pg_canvas" width="600" height="600"></canvas>
+						<canvas id="pg_canvas" width="600" height="600" style='z-index:1'></canvas>
 					</div>
 				</div>  
             </div>	
@@ -235,7 +235,7 @@
 		<!-- Sidebar  -->
 		<div class="pg-sidebar-wrapper pg-editor-sidebar pg-no-scroll">
            <div class="pg-sidebar-tab-conttainer">
-		   		<div class="pg-editor-aside-nav">
+		   		<div class="pg-editor-aside-nav pg-custom-scrollbar" style="max-width: 105px !important;">
 					<ul>
 						<li>
 						<a class="active" id="main_tab_text" data-element="pg_element_text" title="Text"> 
@@ -293,6 +293,16 @@
 								<span>AI Text</span>
 							</a>
 						</li>
+
+						<li>
+							<a id="main_tab_qr_code" data-element="pg_element_qr_code" title="QR Code"> 
+								<div>
+								<svg width="35" height="35" version="1.1" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512"><g><path d="M19.5 10a1 1 0 0 0 .71-1.71 1 1 0 0 0-1.42 0A1 1 0 0 0 19.5 10zM24.5 10a1 1 0 0 0 .71-1.71 1 1 0 0 0-1.42 0A1 1 0 0 0 24.5 10zM24.12 11.12a3.08 3.08 0 0 1-4.24 0 1 1 0 0 0-1.42 1.42 5 5 0 0 0 7.08 0 1 1 0 0 0-1.42-1.42z"/><path d="M27 5h-4V4a1 1 0 0 0 0-2h-2a1 1 0 0 0 0 2v1h-4a3 3 0 0 0-3 3H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h2v3a1 1 0 0 0 .53.88 1 1 0 0 0 1-.05L14.3 26H21a3 3 0 0 0 3-3v-6h3a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3zm-5 18a1 1 0 0 1-1 1h-7a1 1 0 0 0-.55.17L9 27.13V25a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h9v4a3 3 0 0 0 3 3h5zm6-9a1 1 0 0 1-1 1H17a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1z"/></g></svg>
+								</div>
+								<span>QR Code</span>
+							</a>
+						</li>
+
 						<li>
 							<a id="pg_element_overlay" data-element="pg_element_overlay" title="Overlay"> 
 								<div>
@@ -396,6 +406,29 @@
 							</div>							
 						</div>
 					</div>
+
+
+					<!-- main tab ai text end -->
+					
+					<!-- main tab qr-code start -->
+					<div class="pg_element_qr_code pg-hidden-element pg-title-elements">
+						<div class="pg-property-widget">
+							<h4 class="pg-sidebar-heading text-center">Generate QR Code</h4>
+							<div class="pg_search_box_sb">
+								<div class="input-group">										    
+									<input type="text" class="qr_code_url" name="qr_code_ur" id="qr_code_ur" placeholder="Enter text to decode">
+									<div class="col-md-6 mt-4" id="code" style="max-width: 120px;max-height: 90px;">
+                                    </div>
+
+								</div> 								
+							</div>  
+							
+														
+						</div>
+					</div>
+
+
+
 					<!-- main tab AI text end -->
 					<!-- main tab Overlay Start -->
 					<div class="pg_element_overlay pg-hidden-element pg-title-elements">
@@ -1966,13 +1999,14 @@
 		<?php }else{ ?>
 			<script>var admin = false;</script>
 		<?php } ?>
+		<script src="<?php echo base_url(); ?>assets/js/jquery.qrcode.min.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/fabric.min.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/jquery-ui.min.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/coloris.min.js"></script>
 		<script src="<?php echo base_url(); ?>assets/js/canvas-custom.js?q=<?php echo time(); ?>"></script>
 		<script src="<?php echo base_url(); ?>assets/js/editor-custom.js?q=<?php echo time(); ?>"></script>		
 		<span id="pg_ajax_url" data-ajax_url="<?php echo base_url(); ?>"></span>
-		<script> 
+		<script>  
 		/**
 		 * Color Switcher
 		 */

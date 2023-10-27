@@ -91,7 +91,7 @@ define('STRIPE_SECRET_KEY', '');
 /**
  * AI IMAGES GENERATOR
  */
-define('AI_IMAGES_GENERATOR', '');  
+define('AI_IMAGES_GENERATOR', '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');  
 /**
  * Youtube Api 
  */

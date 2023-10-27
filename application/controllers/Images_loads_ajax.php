@@ -362,14 +362,14 @@ class Images_loads_ajax extends CI_Controller {
 				"n"=>1,
 				"size"=>$size
 			); 
-			
+		$key = "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"; 	
 		$data_string = json_encode($args);  
 		$ch = curl_init('https://api.openai.com/v1/images/generations');
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                       
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                         
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		'Authorization: Bearer '.AI_IMAGES_GENERATOR,
+		'Authorization: Bearer '.$key,
 		'Content-Type: application/json'
 		));
 		$result = curl_exec($ch);
@@ -385,10 +385,10 @@ class Images_loads_ajax extends CI_Controller {
                     echo '<div class="ed_image pg_canvas_add_image" data-url="'.$img_url.'"><img src="'.$img_url.'" alt="AI IMAGES"></div>';
                 }
             }else{
-                echo '<p>'.esc_html($a['error']['message']).'</p>';
+                // echo '<p>'.esc_html($a['error']['message']).'</p>';
             }
         }else{
-            echo '<p>'.esc_html__('Please Enter Object Name.','gpt-blaster').'</p>';
+            // echo '<p>'.esc_html__('Please Enter Object Name.','gpt-blaster').'</p>';
         }
        
 
@@ -490,6 +490,8 @@ class Images_loads_ajax extends CI_Controller {
 		curl_setopt_array($curl, $options);
 		$response = curl_exec($curl);
 		$httpcode = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+        var_dump($response);
+        die();
         if(200 == $httpcode){
             $json_array = json_decode($response, true);
 		    $choices = $json_array['choices'];

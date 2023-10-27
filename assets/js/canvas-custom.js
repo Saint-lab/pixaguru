@@ -3262,5 +3262,46 @@
 	 $(document).on('click','.pxl-layers-close',function(){
         $("body").toggleClass("px-layers-opened");
 	 }) 
+ const qr_url = $('#qr_code_ur').val();
+	  $('#code').qrcode({ 
+    render: "canvas",
+    text: qr_url
+}); 
+ const qr_temp = "#innerqr";
+	  $('#code').on('click',function(e){
+	  	console.log("click");
+	var obj = document.createElement('div');
+	obj.setAttribute("id", qr_temp);		
+        
+    //      obj = new fabric.Rect({
+				// left: canvas.getWidth() / 2,
+				// top: canvas.getHeight() / 2,
+				// width: 300,
+				// height: 300,
+				// originX: "center",
+				// originY: "center",
+			 //  });
+		  //     obj.center().setCoords();
+			 //  canvas.add(obj).renderAll();
+
+		    var f = canvas_width / 2 ;
+			var d = canvas_height / 2 ;
+			var g = new fabric.IText(obj, {
+				left: f,
+				top: d,
+				originX: "center",
+				originY: "center",
+				
+			});
+		// 	canvas.add(g);
+		// 	canvas.renderAll();
+		 });
+
+$(qr_temp).qrcode({ 
+    render: "canvas",
+    text: qr_url
+     });
+	  
+		
 
 })( jQuery );  

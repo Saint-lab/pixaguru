@@ -199,6 +199,44 @@
                         </span>
                     </a>
                 </li>
+
+                <li>
+                    <a href="<?php echo base_url(); ?>dashboard/getSwift" <?php echo isset($menu) && $menu == 'swift' ? 'class="active"' : '';?>>
+                       
+                        <span>
+                            Swift
+                        </span>
+                    </a>
+                </li>
+
+                 <li>
+                    <a href="<?php echo base_url(); ?>dashboard/getLimitless" <?php echo isset($menu) && $menu == 'limitless' ? 'class="active"' : '';?>>
+                       
+                        <span>
+                            Limitless Traffic
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="<?php echo base_url(); ?>dashboard/getFranchise" <?php echo isset($menu) && $menu == 'franchise' ? 'class="active"' : '';?>>
+                       
+                        <span>
+                           Franchise
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="<?php echo base_url(); ?>dashboard/getIncome" <?php echo isset($menu) && $menu == 'income' ? 'class="active"' : '';?>>
+                       
+                        <span>
+                           Multi Income
+                        </span>
+                    </a>
+                </li>
+
+
                 <li> 
                     <a href="<?php echo base_url(); ?>dashboard/subscription_plan" <?php echo isset($menu) && $menu == 'subscription_plan' ? 'class="active"' : '';?>>
                         <span class="pg-nav-icon">

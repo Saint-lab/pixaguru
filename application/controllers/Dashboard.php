@@ -183,4 +183,165 @@ class Dashboard extends CI_Controller {
 		echo json_encode($res);                    
     } 
 
+       public function getSwift()
+  {
+   		$header['menu'] = 'swift';
+        $this->load->view('common/header',$header);
+		$this->load->view('otos/swift');
+		$this->load->view('common/footer');
+  }
+
+  public function getLimitless()
+  {
+   		$header['menu'] = 'limitless';
+       $this->load->view('common/header',$header);
+		$this->load->view('otos/limitless');
+		$this->load->view('common/footer');
+  }
+
+  public function getFranchise()
+  {
+   		$header['menu'] = 'franchise';
+        $this->load->view('common/header',$header);
+		$this->load->view('otos/franchise');
+		$this->load->view('common/footer');
+  }
+
+  public function getIncome()
+  {
+   		$header['menu'] = 'income';
+        $this->load->view('common/header',$header);
+		$this->load->view('otos/income');
+		$this->load->view('common/footer');
+  }
+
+  public function getAgency()
+  {
+  	    $header['menu'] = 'agency';
+  	    $data['users'] = $this->Common_DML->get_data( 'users', array('reseller_id'=> $this->g_userID) );
+  	    
+        $this->load->view('common/header',$header);
+		$this->load->view('otos/agency',$data);
+		$this->load->view('common/footer');
+  }
+
+public function postAgency()
+{
+
+		$user_name  = $this->input->post('user_name');
+		$user_password  = $this->input->post('user_password');
+		$user_send_email  = $this->input->post('user_send_mail');
+        
+		
+		
+        $array = array(
+				'name' => $user_name,
+				'email' => $user_send_email,
+				'password' => md5($user_password),
+				'access_level' => '5',
+				'status' => 1,
+				'datetime' => date('Y-m-d H:i:s'),
+				'reseller_id' => $this->g_userID, 
+			);
+		$where = array( 'email' => $user_send_email );
+		$result = $this->Common_DML->get_data( 'users', $where, 'COUNT(*) As total' );
+        $result_id = $this->Common_DML->get_data( 'users', $where);
+		if(!empty($result) && $result[0]['total'] == 0){
+			$insert_id = $this->Common_DML->put_data( 'users', $array );
+			$folder = 'user_'.$insert_id;
+			if (!is_dir('uploads/'.$folder)) {
+				mkdir('./uploads/' . $folder, 0777, TRUE);
+				mkdir('./uploads/' . $folder . '/campaigns', 0777, TRUE);
+				mkdir('./uploads/' . $folder . '/images', 0777, TRUE);
+				mkdir('./uploads/' . $folder . '/templates', 0777, TRUE);
+			}
+		}else{	
+			$where = array('email' =>$email);
+			$this->Common_DML->set_data( 'users', $array, $where );
+			$insert_id = $result_id[0]['id'];
+		}
+
+		if($insert_id){
+		    // Subscription info 
+			$subscrID = rand().'_free'; 
+			$custID = $insert_id; 
+			$planID = "Ng=="; 
+			$planAmount = 0.00; 
+			$planCurrency = "USD"; 
+			$planInterval = "year"; 
+			$planIntervalCount = 1; 
+			$created = date("Y-m-d H:i:s"); 
+			$current_period_start = date("Y-m-d H:i:s"); 
+			$current_time = date("Y-m-d H:i:s",time());
+			$future_timestamp = strtotime("+1 year"); 
+			$final_future = date("Y-m-d H:i:s",+$future_timestamp);
+			$current_period_end = $final_future; 
+			$status = 'active'; 
+			// Insert tansaction data into the database 
+			$subscripData = array( 
+					'user_id' => $insert_id, 
+					'plan_id' => 6, 
+					'stripe_subscription_id' => $subscrID, 
+					'stripe_customer_id' => $custID, 
+					'stripe_plan_id' => $planID, 
+					'plan_amount' => $planAmount, 
+					'plan_amount_currency' => $planCurrency, 
+					'plan_interval' => $planInterval, 
+					'plan_interval_count' => $planIntervalCount, 
+					'plan_period_start' => $current_period_start, 
+					'plan_period_end' => $current_period_end, 
+					'payer_email' => $user_send_email, 
+					'created' => $created, 
+					'status' => $status 
+			    	); 
+			$subscription_id = $this->Common_DML->put_data('user_subscriptions', $subscripData);
+			// Update subscription id in the users table  
+			if($subscription_id && !empty($insert_id)){ 
+				$data = array('subscription_id' => $subscription_id); 
+				$where = array('id' =>$insert_id);
+				$this->Common_DML->set_data( 'users', $data, $where );
+			 }
+
+		} 
+
+	redirect( 'dashboard/getAgency', 'refresh' );	
+
+}
+
+public function deleteAgency($id)
+{
+	$image = $this->Common_DML->get_data_row( 'users', array( 'id' => $id) );
+	$folder = './uploads/user_'.$id;
+	if($image){
+	$this->deleteDir($folder);
+	$query = ['id' => $id];
+   $this->Common_DML->delete_data('users', $query);
+   $data = ['user_id' => $id];
+   $this->Common_DML->delete_data('user_subscriptions', $data);
+    $result = array('status' => 'ok');
+    echo json_encode($result);
+	}
+		
+}
+
+
+public static function deleteDir($dirPath) {
+    if (! is_dir($dirPath)) {
+        throw new InvalidArgumentException("$dirPath must be a directory");
+    }
+    if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+        $dirPath .= '/';
+    }
+    $files = glob($dirPath . '*', GLOB_MARK);
+    foreach ($files as $file) {
+        if (is_dir($file)) {
+            self::deleteDir($file);
+        } else {
+            unlink($file);
+        }
+    }
+    rmdir($dirPath);
+}
+
+
 }

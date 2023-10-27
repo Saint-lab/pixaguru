@@ -253,7 +253,9 @@ class Campaign extends CI_Controller {
 			$templates = $this->Common_DML->get_data( 'user_templates', $where );
 			for($i=0;$i<count($templates);$i++){
 				$path = $templates[$i]['thumb'];
+				if($templates[$i]['type'] != ""){
 				if(!empty($path)) unlink($path);
+			     }
 				$where = array( 'template_id' => $templates[$i]['template_id'], 'user_id' => $userID );
 				$this->Common_DML->delete_data( 'user_templates', $where );	
 			}
