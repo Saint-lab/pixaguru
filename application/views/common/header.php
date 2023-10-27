@@ -5,7 +5,14 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Script fonts (Google Fonts Calling) -->
-		<link href="<?php echo base_url(); ?>assets/css/fonts.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap">
+		<!-- <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha384-KyZXEAg3QhqLMpG8r+QxZpM1XmWO3pH54hF3VwgtYdzoUbKCrYb0nD1P8pWjcc8bB"
+            crossorigin="anonymous"
+        /> -->
+        <link href="<?php echo base_url(); ?>assets/css/fonts.css" rel="stylesheet">
         <link rel="shortcut icon" type="image/ico" href="<?php echo base_url(); ?>assets/images/favicon.png" />
 	    <link rel="icon" type="image/ico" href="<?php echo base_url(); ?>assets/images/favicon.png" />
 		<!-- Bootstrap Bundle -->
@@ -15,16 +22,21 @@
 		<link href="<?php echo base_url(); ?>assets/css/jquery.mCustomScrollbar.min.css" rel="stylesheet">
 		<link href="<?php echo base_url(); ?>assets/css/style.css?q=1" rel="stylesheet">
         <link href="#" id="drag_mode" rel="stylesheet">
-
         <style>
     .containerdd {
       max-width: 450px;
     }
     .imgGallery img {
       padding: 3px;
+      max-width: 350px;
+      max-height: 300px;
+    } 
+    .imgGallery1 img {
+      padding: 3px;
       max-width: 250px;
       max-height: 200px;
-    } 
+    }
+
     .imgGallery2 img {
       padding: 3px;
       max-width: 250px;

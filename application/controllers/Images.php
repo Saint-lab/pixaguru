@@ -36,7 +36,9 @@ class Images extends CI_Controller {
 
 	}
 
-	public function size( $size = '1200x628' ){
+	public function size( $size = '1200x628'){
+		$option = isset($_GET['type'])?$_GET['type']:'';
+		$studio = isset($_GET['studio'])?$_GET['studio']:'';
 
 		$access_level = $this->session->userdata( 'access_level' );
 
@@ -61,6 +63,42 @@ class Images extends CI_Controller {
 			$template_size_count = $this->Common_DML->query('SELECT template_size, COUNT(*) as tot FROM `user_templates` WHERE `user_id` = '.$adminUserID[0]['id'].' AND `campaign_id` = 1 AND status = 1 AND `template_id` NOT IN(1,2) GROUP BY template_size');
 
 		}
+        
+		if(isset($studio) == 1 && $studio != "")	{
+
+			if	($studio == "mockup") { 
+			
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'mockup' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+			
+			}	else if ($studio == "boxshot") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'boxshot' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}	else if ($studio == "bundle") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'bundle' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}	else if ($studio == "logo") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'logo' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}	else if ($studio == "ai") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `type` = 'ai' AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}	else if ($studio == "graphics") {
+
+				$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+			}
+
+
+		} else {
+
+			$pre_templates = $this->Common_DML->query( "SELECT * FROM `user_templates` WHERE `user_id` = ".$adminUserID[0]['id']." AND `campaign_id` = 1 AND `status` = 1 AND `template_id` NOT IN(1,2) ORDER BY `modifydate` DESC LIMIT 0,12" );
+
+		}
+
 
 		$campaigns = $this->Common_DML->get_data( 'campaign', array( 'user_id' => $userID ) );
 
@@ -184,6 +222,8 @@ class Images extends CI_Controller {
         $template_id = '';
         $userID = $this->g_userID;
 
+		$campaign_type = html_escape($_POST['template_studio']);
+
 		if(!empty($_POST['campaign_name'])){
 
 			$campaign_name = html_escape($_POST['campaign_name']);
@@ -209,7 +249,7 @@ class Images extends CI_Controller {
 			$template_name = html_escape($_POST['template_name']);
             $get_template_id = html_escape($_POST['get_template_id']);
             $template_userID = html_escape($_POST['template_userID']);
-            $template_data = $this->Common_DML->get_data( 'user_templates', array( 'user_id' => $template_userID, 'template_id' => $get_template_id, 'status' => 1 ), 'template_data,template_size,cat_id,sub_cat_id', array() );
+            $template_data = $this->Common_DML->get_data( 'user_templates', array( 'user_id' => $template_userID, 'template_id' => $get_template_id, 'status' => 1 ), 'template_data,template_size,cat_id,sub_cat_id,thumb', array() );
             if(!empty($template_data)){
 
 				$what = $template_data[0];
@@ -223,14 +263,28 @@ class Images extends CI_Controller {
 				$what['campaign_id'] = $campaign_id;
 
 				$what['datetime'] = $date;
+				$what['thumb'] = $template_data[0]['thumb'];
 
 				$what['modifydate'] = $date;
 
 				$what['status'] = 1;
 
+				$what['type'] = $campaign_type;
+
 				$template_id = $this->Common_DML->put_data( 'user_templates', $what );
 
-				$url = base_url() . 'editor/edit/'.$campaign_id.'/'.$template_id;
+				switch ($campaign_type) {
+					case "mockup":
+						$url = base_url() . 'studio/mockup/'.$campaign_id.'/'.$template_id;
+						break;
+					case "boxshot":
+						$url = base_url() . 'editor/edit/'.$campaign_id.'/'.$template_id;
+						break;
+					default:
+						$url = base_url() . 'editor/edit/'.$campaign_id.'/'.$template_id;
+				}
+
+
 
 				echo json_encode( array( 'status' => 1, 'msg' =>html_escape($this->lang->line('ltr_images_campaign_template_msg1')), 'url' => $url ) );
 
@@ -385,7 +439,7 @@ class Images extends CI_Controller {
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/bkImage/';
@@ -444,16 +498,16 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'bkremover',
        ];
        $this->Common_DML->put_data('al_image', $query);
       if (file_exists("imagebk".$this->g_userID.".data")) {
     unlink("imagebk".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -485,7 +539,7 @@ public function addWhiteBk(){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/whiteBk/';
@@ -544,16 +598,16 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'whitebk',
        ];
        $this->Common_DML->put_data('al_image', $query);
       if (file_exists("imagewhitebk".$this->g_userID.".data")) {
     unlink("imagewhitebk".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -588,7 +642,7 @@ public function colorizationPost(){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/colorImage/';
@@ -643,16 +697,16 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'colorization',
        ];
        $this->Common_DML->put_data('al_image', $query);
       if (file_exists("imagecolor".$this->g_userID.".data")) {
     unlink("imagecolor".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -681,7 +735,7 @@ public function enhencementPost(){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/enhencementImage/';
@@ -736,16 +790,16 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'enhencement',
        ];
        $this->Common_DML->put_data('al_image', $query);
       if (file_exists("imageenhec".$this->g_userID.".data")) {
     unlink("imageenhec".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -775,7 +829,7 @@ public function compressionPost(){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/compressImage/';
@@ -830,16 +884,16 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'compress',
        ];
        $this->Common_DML->put_data('al_image', $query);
       if (file_exists("imagecompress".$this->g_userID.".data")) {
     unlink("imagecompress".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -868,7 +922,7 @@ public function cropingPost(){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/cropingImage/';
@@ -923,16 +977,16 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'croping',
        ];
        $this->Common_DML->put_data('al_image', $query);
       if (file_exists("imagecrop".$this->g_userID.".data")) {
     unlink("imagecrop".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -960,7 +1014,7 @@ public function imageToTextPost(){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/imageToText/';
@@ -1019,15 +1073,15 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'croping',
        ];
       if (file_exists("imagecrop".$this->g_userID.".data")) {
     unlink("imagecrop".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -1057,7 +1111,7 @@ public function objectRemoverPost(){
 				$filename = $_FILES['fileUpload1']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/objremover/';
@@ -1146,16 +1200,16 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'objremover',
        ];
        $this->Common_DML->put_data('al_image', $query);
       if (file_exists("imageobj".$this->g_userID.".data")) {
     unlink("imageobj".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -1185,7 +1239,7 @@ public function idPhotoPost(){
 				$filename = $_FILES['fileUpload']['name'];
 				$ext = pathinfo($filename, PATHINFO_EXTENSION);
 				$ext = empty($ext) ? 'jpg' : $ext;
-				$name = time().$ext;
+				$name = time().'.'.$ext;
 				$userID = $this->g_userID;
 				if(!$userID) return false;
 				$path = './uploads/user_'.$userID.'/idPhoto/';
@@ -1245,16 +1299,16 @@ file_put_contents($path2.$temp."image.png", file_get_contents($foutput));
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path2.$temp."image.png",
-           //'original' => $image_name,
+           'original' => $path.$name,
            'type' => 'idphoto',
        ];
        $this->Common_DML->put_data('al_image', $query);
       if (file_exists("imageid".$this->g_userID.".data")) {
     unlink("imageid".$this->g_userID.".data");
     }
-if (file_exists($path.$name)) {
-    unlink($path.$name);
-    }
+// if (file_exists($path.$name)) {
+//     unlink($path.$name);
+//     }
 
 }
    
@@ -1271,6 +1325,9 @@ public function deleteGeneratedImage($id, $page="")
 	 	if (file_exists($image->image_url)) {
     unlink($image->image_url);
     }
+	if (file_exists($image->original)) {
+		unlink($image->original);
+		}
 	$query = ['id' => $id];
    $this->Common_DML->delete_data('al_image', $query);
 redirect( 'images/'.$page, 'refresh' );
@@ -1402,7 +1459,7 @@ if(isset($joutput)){
            'user_id'=> $this->g_userID,
            //'name' =>  request("name"),
            'image_url' => $path.$temp."image".$i.".png",
-           'original' => html_escape($_POST['resolution']),
+           'resolution' => html_escape($_POST['resolution']),
            'type' => 'ai_image',
        ];
        $this->Common_DML->put_data('al_image', $query);

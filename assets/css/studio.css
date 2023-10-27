@@ -1,0 +1,75 @@
+.page-content {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.page-content .editor {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    align-items: center;
+    margin-top: 100px;
+    gap: 10px;
+}
+
+.page-content .editor .mockup-img {
+    width: 100%;
+}
+
+
+
+.page-content .editor .img-file {
+    position: absolute;
+    background-color: green;
+
+    /* top: 142.4px;
+    height: 219px;
+    width: 310px;
+    margin-right: 2px; */
+
+    /* top: 178px;
+    height: 170px;
+    width: 304px; */
+
+    /* Mockup properties */
+
+}
+
+
+
+/* 
+Mockup properties
+1. Desktop Screen
+    top: 203px;
+    height: 210px;
+    width: 366px;
+
+2. Laptop Screen
+    top: 195px;
+    height: 194px;
+    width: 310px;
+    margin-left: 3px;
+
+3. Smart Home Screen
+    top: 194px;
+    width: 244px;
+    height: 140px;
+    transform-origin: 0% 0%;
+    transform: skew(-1deg) rotate(0deg);
+4. Phone Mockup
+    top: 207px;
+    height: 214px;
+    width: 100px;
+    margin-right: 18px;
+    border-radius: 8px;
+    transform: rotateZ(-0.4deg)
+5. Painting
+    top: 142.4px;
+    height: 219px;
+    width: 310px;
+    margin-right: 2px;
+
+
+*/

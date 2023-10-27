@@ -25,13 +25,13 @@ Copyright (c) 2023
 :root {
     --pixaguru-global-color: #797979;
     --pixaguru-body-bg: #F8FAFB;
-    --pixaguru-primary: #ff5887;
+    --pixaguru-primary: #1483af;
     --pixaguru-primary-rgb: rgb(255 88 135);
     --pixaguru-white-color: #ffffff;
     --pixaguru-green-color: #8cdf5f;
     --pixaguru-title-color: #2C2F3E;
     --pixaguru-border-color: #E5EDFE;
-    --pixaguru-gradient: linear-gradient(0deg, #ff3b72 0%, #ff779c 100%);
+    --pixaguru-gradient: linear-gradient(0deg, #1483af 0%, #87CEEB 100%);
 }
 /*--------------- Comman Style ---------------*/
 body {
@@ -79,7 +79,7 @@ a, a:hover, a:focus{
     transition: all 0.3s;
 }
 a:hover {
-    color: var(--pixaguru-primary);
+    color: var(--pixaguru-primary) !important;
 }
 ul {
     padding: 0;
@@ -309,14 +309,75 @@ body.pg-user-login .pg-template-status-center .pg-btn:first-child {
     flex-wrap: wrap;
     align-items: center;
 }
+
+
 .pg-header-row {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
+    /* flex-wrap: wrap; */
+    /* align-items: center; */
+    /* justify-content: center; */
     grid-gap: 20px;
     width: 100%;
+    gap: 100px;
+    /* height: 100vh; */
 }
+.font{
+    font-family: gBitter, 'Nosifer', 'Nunito', sans-serif;
+}
+.objrmviews{
+    margin-left: 20px!important;
+    width: 350px !important;
+    border: 5px dashed rgba(0,0,0,.125);
+    height: 515px;
+    border-radius:15px;
+    position:relative;
+    /* display:flex;
+    flex-direction: column; */
+    /* justify-content:center; */
+    /* height: 100%; */
+}
+.imgviews {
+    margin-left: 20px!important;
+    width: 400px !important;
+    border: 5px dashed rgba(0,0,0,.125);
+    height: 400px;
+    border-radius:15px;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    /* height: 100%; */
+}
+
+.imgpreview{
+    position:absolute;
+    left:50%; 
+    transform:translate(-50%, -50%); 
+    display:flex; 
+    justify-content:center;
+    flex-direction:column;
+}
+
+.imgform{
+    text-align: center;
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.firstimg{
+    flex-grow: 0.5;
+    /* vertical-align: middle; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imgbtn{
+    display: none;
+    margin-bottom: 30px !important;
+}
+
+
 /* User Info  */
 .pg-user-info {
     display: inline-flex;
@@ -640,7 +701,7 @@ a {
     fill: var(--pixaguru-primary);
 }
 .pg-aside-navigation ul li a.active span svg .pg-user-second-color, .pg-aside-navigation ul li a:hover span svg .pg-user-second-color{ 
-    fill: #FFA6BF;
+    fill: #87CEEB;
 }
 .pg-aside-navigation ul li ul.sub-menu {
     padding-left: 40px;
@@ -651,7 +712,7 @@ a {
 }
 /*--------------- Page Wrapper Style ---------------*/
 .pg-main-wrapper {
-    padding-left: 20px;
+    padding-left: 250px;
     padding-top: 10px;
 }
 .pg-page-content {
@@ -797,6 +858,7 @@ a {
     position: absolute;
     top: 8px;
     left: 8px;
+
 }
 .pg-active-tem:before{
     content: '';
@@ -1067,12 +1129,13 @@ table.dataTable.no-footer {
 }
 table.dataTable thead th, table.dataTable thead td {
     border: 0;
+    /* border-radius: 10px; */
     background: #f0f0f0;
     padding: 15px 20px;
     font-weight: 700;
     color: var(--pixaguru-white-color);
     white-space: nowrap;
-    background: var(--pixaguru-title-color);
+    background: var(--pixaguru-gradient);
     font-weight: 600;
     padding: 16px 20px;
     text-transform: capitalize;
@@ -4149,7 +4212,7 @@ form#pg_google_analytics_header_scripte {
         left: 0;
     }
     .pg-main-wrapper {
-        padding-left: 0;
+        padding-left: 0px;
     }
     body.pg-sidebar-showshow .pg-sidebar-wrapper,
     body .pg-sidebar-wrapper,
@@ -4216,6 +4279,7 @@ form#pg_google_analytics_header_scripte {
     }
     body.pg-editor-body .pg-main-wrapper {
         padding-top: 100px;
+        padding-left: 0px !important;
     }
     .pg-header-options-wrap {
         grid-gap: 5px;
@@ -4495,6 +4559,7 @@ form#pg_google_analytics_header_scripte {
 	}
 	body.pg-editor-body .pg-main-wrapper {
 		padding-top: 140px;
+        padding-left: 0px;
 	}
 	body.pg-editor-body .pg-canvas-control-wrap {
 		padding: 5px;
