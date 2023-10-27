@@ -41,7 +41,7 @@
 		<div class="nav-section">
 			<ul class="nav justify-content-center">
 				<li class="nav-item">
-					<a style="color: white;" class="<? echo active("graphics")." nav-link"?>" aria-current="page" href="<? echo  get_url("graphics")  ?>"> Graphics Studio </a>
+					<a style="color: white;" class="<?php echo active("graphics")." nav-link" ;?>" aria-current="page" href="<?php echo  get_url("graphics")  ?>"> Graphics Studio </a>
 				</li>
 				<li class="nav-item">
 					<a style="color: white;"  class="nav-link" href="<?php echo get_url("mockup") ?>"> Mockup Studio </a>
