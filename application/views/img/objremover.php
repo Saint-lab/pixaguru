@@ -35,7 +35,7 @@
    </div>
  </div>
  <div class="col-lg-8 col-md-12 col-sm-12" style="width: 500px !important;">
-      <div class="card" style="border-top: solid 3px #4b8ed1;border-right: 0;border-bottom: 0;border-left: 0">
+      <div class="card" style="border-top: solid 4px #4b8ed1;border-right: 0;border-bottom: 0;border-left: 0">
         <div class="card-body">
           <div class="d-flex">
             <div class="w-100">
@@ -68,6 +68,35 @@
       </div>
     </div>
 </div>
+<div id="updateBtn" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Generated Image</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                     <div style="width:100%;">
+                   
+                     <img src="" id="model_img" style="width:100%; height:auto;padding:4px;">   
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+
+<script type="text/javascript">
+  $('.viewBtn').on('click', function () {
+            console.log('yes');
+            var modal = $('#updateBtn');
+           var lmg = $(this).data('img');
+            $("#model_img").attr("src", lmg);
+           modal.modal('show');
+        });
+</script>**
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 

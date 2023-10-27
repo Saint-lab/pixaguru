@@ -9,11 +9,11 @@
           <div class="row">
             <div class="template-view">
               <div class="template-icon mb-2 d-flex">
+                <!-- <div style="font-size: 15px;margin-right: 5px;">
+                  <i class="fa fa-image"></i>
+                </div> -->
                 <div>
-                  <i class="fa-solid fa-image green-icon"></i>
-                </div>
-                <div>
-                  <h6 class="mt-1 ml-3 fs-16 number-font">AI Image Generator</h6>
+                  <h3 class="mt-1 ml-3 fs-16 number-font">AI-Image Generator</h3>
                 </div>                  
               </div>                
               <div class="template-info">
@@ -28,15 +28,15 @@
 
             <div class="col-sm-12">               
               <div class="input-box"> 
-                <h6 class="fs-11 mb-2 font-weight-semibold">Image Description  <span class="text-required"><i class="fa-solid fa-asterisk"></i></span></h6>                 
-                <div class="form-group">                
+                <h6 class="fs-11 mb-2 font-weight-semibold">Image Description  <span class="text-required"><i class="fa fa-asterisk"></i></span></h6>                 
+                <div class="form-group mb-3">                
                   <textarea rows="3" cols="50" class="form-control" id="title" name="title" placeholder="e.g. Spaceship flying to the moon" required></textarea>
                   
                 </div> 
               </div> 
             </div>
 
-            <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
               <div id="form-group">
                 <h6 class="fs-11 mb-2 font-weight-semibold">Artist Name</h6>
                 <select id="artist" name="artist" data-placeholder="{{ __('Select Artist Name') }}">
@@ -64,7 +64,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
               <div id="form-group">
                 <h6 class="fs-11 mb-2 font-weight-semibold">Image Style</h6>
                 <select id="style" name="style" >
@@ -98,7 +98,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
               <div id="form-group">
                 <h6 class="fs-11 mb-2 font-weight-semibold">Medium</h6>
                 <select id="medium" name="medium" data-placeholder="{{ __('Select Image Medium') }}">
@@ -120,7 +120,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
               <div id="form-group">
                 <h6 class="fs-11 mb-2 font-weight-semibold"> Lighting Style </h6>
                 <select id="lightning" name="lightning" data-placeholder="{{ __('Select Image Lighting Style') }}">
@@ -150,7 +150,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
               <div id="form-group">
                 <h6 class="fs-11 mb-2 font-weight-semibold">Mood</h6>
                 <select id="mood" name="mood" data-placeholder="{{ __('Select Image Mood') }}">
@@ -176,10 +176,10 @@
 
             
             
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
               <div id="form-group">
-                <h6 class="fs-11 mb-2 font-weight-semibold">Image Resolution <i class="ml-1 text-dark fs-12 fa-solid fa-circle-info" data-tippy-content="{{ __('The image resolutoin of the generated images') }}"></i></h6>
-                <select id="resolution" name="resolution" data-placeholder="{{ __('Set image resolution') }}">
+                <h6 class="fs-11 mb-2 font-weight-semibold">Image Resolution <i class="ml-1 text-dark fs-12" data-tippy-content="{{ __('The image resolutoin of the generated images') }}"></i></h6>
+                <select id="resolution" name="resolution" data-placeholder="{{ __('Set image resolution') }}" style="padding: 10px 33px 10px 10px !important">
                  
                     <option value='256x256' selected>[256x256] Small Image</option>
                     <option value='512x512'>[512x512] Medium Image</option>                                                             
@@ -189,7 +189,7 @@
               </div>
             </div>
 
-            <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-12 col-sm-12 mb-3">
               <div id="form-group">
                 <h6 class="fs-11 mb-2 font-weight-semibold">Number of Variations <i class="ml-1 text-dark fs-12 fa-solid fa-circle-info" data-tippy-content="{{ __('The number of images to generate') }}"></i></h6>
                 <select id="max-results" name="max_results" data-placeholder="{{ __('Set Number of Variants') }}">
@@ -237,19 +237,19 @@
                 <th width="15%">Image</th> 
                 <th width="5%">Resolution</th>
                                                                                       
-                <th width="5%">Actions</th>
+                <th width="5%" style="vertical-align:middle;text-align:center;">Actions</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($images as $key => $image) { ?>
               <tr>
-                <td><img src="<?= base_url($image['image_url']);?>" alt="Generated Image" style="width:100px;height: 80px;cursor: pointer;" class="viewBtn" data-img="<?= base_url($image['image_url']);?>"></td>
+                <td><img src="<?= base_url($image['image_url']);?>" alt="Generated Image" style="width:100px;height: 80px;cursor: pointer;" class="viewBtn" data-img="<?= base_url($image['image_url']);?>" ></td>
                 <td>
-                  <?= $image['original'] ?>
+                  <?= $image['resolution'] ?>
                 </td>
-                              <td>
-                  <a href="<?= base_url('download/image/'.$image['id'].'/getAiImages'); ?>" class="btn btn-primary p-2">Download</a>
-                  <a href="<?= base_url('delete/image/'.$image['id'].'/getAiImages'); ?>" class="btn btn-danger p-2">Delete</a>
+                <td style="vertical-align:middle;text-align:center;">
+                  <a href="<?= base_url('download/image/'.$image['id'].'/getAiImages'); ?>" title="Download"  style="color:black;"><i    class="fa fa-download" style="font-size: 35px;"></i></a>
+                  <a href="<?= base_url('delete/image/'.$image['id'].'/getAiImages'); ?>" title="Delete"  style="color:red;"><i class="fa fa-trash" style="font-size: 35px;margin-left:15px"></i></a>
                 </td>
               </tr>
               
@@ -279,6 +279,8 @@
                 </div>
             </div>
         </div>
+
+<!-- <script src="https://kit.fontawesome.com/d9f83b2ae8.js" crossorigin="anonymous"></script> -->
 <script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
 <script type="text/javascript">
   $('.viewBtn').on('click', function () {

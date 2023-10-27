@@ -309,6 +309,8 @@ body.pg-user-login .pg-template-status-center .pg-btn:first-child {
     flex-wrap: wrap;
     align-items: center;
 }
+
+
 .pg-header-row {
     display: flex;
     /* flex-wrap: wrap; */
