@@ -542,6 +542,7 @@ jQuery(document).ready(function($) {
 		var get_template_id = $('#get_template_id').val();
 		var template_userID = $('#template_userID').val();
 		var template_size = $('#m_template_size').val();
+		var template_studio = $('#m_template_studio').val();
 		
 		if($('#img_height').length && $('#img_width').length){
 			var w = $('#img_width').val();
@@ -558,12 +559,14 @@ jQuery(document).ready(function($) {
 		$.ajax({
 			type:'post',
 			url: ajaxurl + 'images/campaign_template',
-			data:{'campaign_id':campaign_id, 'campaign_name':campaign_name, 'template_name':template_name, 'template_userID':template_userID, 'get_template_id':get_template_id,'template_size':template_size},
+			data:{'campaign_id':campaign_id, 'campaign_name':campaign_name, 'template_name':template_name, 'template_userID':template_userID, 'get_template_id':get_template_id,'template_size':template_size, 'template_studio': template_studio},
 			success:function(data){
 				var result = jQuery.parseJSON(data);
 				if(result.status){
 					$.toaster(result.msg, 'Success', 'success');
+	
 					setTimeout(function(){window.location = result.url}, 300);
+
 				}else{
 					$.toaster(result.msg, 'Error', 'danger');
 				}
