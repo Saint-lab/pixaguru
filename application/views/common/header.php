@@ -5,6 +5,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Script fonts (Google Fonts Calling) -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&display=swap">
 		<link href="<?php echo base_url(); ?>assets/css/fonts.css" rel="stylesheet">
         <link rel="shortcut icon" type="image/ico" href="<?php echo base_url(); ?>assets/images/favicon.png" />
 	    <link rel="icon" type="image/ico" href="<?php echo base_url(); ?>assets/images/favicon.png" />
@@ -22,9 +23,15 @@
     }
     .imgGallery img {
       padding: 3px;
+      max-width: 350px;
+      max-height: 300px;
+    } 
+    .imgGallery1 img {
+      padding: 3px;
       max-width: 250px;
       max-height: 200px;
-    } 
+    }
+
     .imgGallery2 img {
       padding: 3px;
       max-width: 250px;

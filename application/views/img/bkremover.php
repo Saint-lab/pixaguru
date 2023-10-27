@@ -1,52 +1,64 @@
- 
- <div class="pg-header-row" style="width: 1000px !important;">
-  <div class="card col-md-4 p-3" style="margin-left: -30px!important;width: 300px !important;">
-   <div class="containerdd mt-5">
-    <form action="<?php echo base_url(); ?>images/bkRemovePost" method="post"  enctype="multipart/form-data" class="mb-3">
-      <h6 class="text-center mb-5">Backgound Remover</h6>
+ <h3 class="text-center mb-4 font">Backgound Remover</h3>
+ <div class="pg-header-row" style="width: 100% !important;">
+  <div class="card col-md-4 p-3 imgviews" >
+   <div class="containerdd mt-5" style="max-width:100%;">
+    <form action="<?php echo base_url(); ?>images/bkRemovePost" method="post"  enctype="multipart/form-data" class="mb-3 imgform">
+      
 
-      <div class="user-image mb-3 text-center">
+      <div class="user-image mb-3 text-center imgpreview" >
         <div class="imgGallery"> 
           <!-- Image preview -->
+          
+        </div> 
+        <div style="text-align:center">
+          <button type="submit" name="submit" class="btn btn-primary btn-block mt-4 imgbtn"  id="sbtn">Generate</button>
         </div>
       </div>
 
       <div class="custom-file">
         <input type="file" name="fileUpload" class="custom-file-input" id="chooseFile" style="display: none" id="fipt">
-        <label class="custom-file-label ml-4 ddd" for="chooseFile">Click to select a file for Upload</label>
+        <label class="custom-file-label ml-4 ddd" for="chooseFile">
+          <img src="<?php echo base_url(); ?>assets/images/bkRemover/upload-image.png" class="image"></img><br>
+          Click to select a file for Upload
+        </label>
       </div>
 
-      <button type="submit" name="submit" class="btn btn-primary btn-block mt-4" style="display: none;margin-left: 30px !important;" id="sbtn">
-       Generate
-      </button>
     </form>
    </div>
  </div>
- <div class="col-md-8" style="width: 400px !important;">
-   <?php //var_dump($images); die();   ?>
-   <table class="dataTable pg-table">
-          <thead>
-            <tr>
-              
-              <th> <?php echo 'Generated Image'; ?></th>
-             
-              <th> <?php echo 'Actions'; ?></th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($images as $key => $image) { ?>
+ <div class="col-lg-8 col-md-12 col-sm-12" style="width: 500px !important;">
+      <div class="card" style="border-top: solid 3px #4b8ed1;border-right: 0;border-bottom: 0;border-left: 0">
+        <div class="card-body">
+          <div class="d-flex">
+            <div class="w-100">
+              <h3 class="card-title fs-16 mt-3 mb-4"><i class="fa-solid fa-image-landscape mr-4 text-success"></i>Generated Images</h3>             
+            </div>  
+                  
+          </div>
+          <!-- SET DATATABLE -->
+          <table id='resultsTable' class='table' width='100%'>
+            <thead>
               <tr>
-                <td><img src="<?= base_url($image['image_url']);?>" alt="Generated Image" style="width:100px;height: 80px;"></td>
-                              <td>
-                  <a href="<?= base_url('download/image/'.$image['id'].'/bkRemove'); ?>" class="btn btn-primary p-2">Download</a>
-                  <a href="<?= base_url('delete/image/'.$image['id'].'/bkRemove'); ?>" class="btn btn-danger p-2">Delete</a>
+                <th width="15%">Image</th> 
+                <th width="5%" style="vertical-align:middle;text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($images as $key => $image) { ?>
+              <tr>
+                <td><img src="<?= base_url($image['image_url']);?>" alt="Generated Image" style="width:100px;height: 80px;cursor: pointer;" class="viewBtn" data-img="<?= base_url($image['image_url']);?>"></td>
+                <td style="vertical-align:middle;text-align:center;">
+                  <a href="<?= base_url('download/image/'.$image['id'].'/bkRemove'); ?>" title="Download"  style="color:black;"><i    class="fa fa-download" style="font-size: 35px;"></i></a>
+                  <a href="<?= base_url('delete/image/'.$image['id'].'/bkRemove'); ?>" title="Delete"  style="color:red;"><i class="fa fa-trash" style="font-size: 35px;margin-left:15px"></i></a>
                 </td>
               </tr>
               
           <?php  }   ?>
-          </tbody>
-        </table>
- </div>
+            </tbody>
+        </table> <!-- END SET DATATABLE --> 
+        </div>
+      </div>
+    </div>
 </div>
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -76,6 +88,8 @@
         multiImgPreview(this, 'div.imgGallery');
         document.getElementById("sbtn").style.display = "inline-block";
         $(".ddd").hide();
+        $(".image").hide();
+
       });
     });    
   </script>

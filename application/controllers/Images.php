@@ -1374,14 +1374,17 @@ public function imageToVideo(){
 
 public function getAiImages()
 {
+	 $header = array();
+		$header['menu'] = 'AI Art Generator';
+		$data['images'] = $this->Common_DML->get_data( 'al_image', array( 'user_id'=>$this->g_userID, 'type'=> 'ai_image') );
 	$this->load->view('common/header');
-	$this->load->view('img/ia_image');
+	$this->load->view('img/ia_image',$data);
 	$this->load->view('common/footer');
 }
 
 public function postAiImage()
 {
-	$max_results = isset($_POST['max_results'])?html_escape((int)$_POST['max_results']):'';
+	$max_results = isset($_POST['max_results'])?html_escape($_POST['max_results']):'';
           
 
             $prompt = isset($_POST['title'])?html_escape($_POST['title']):'';
@@ -1409,11 +1412,76 @@ public function postAiImage()
 
             $complete = [
                     'prompt' => $prompt,
-                    'size' => $request->resolution,
-                    'n' => $max_results,
-                    "response_format" => "url",
+                    'size' => html_escape($_POST['resolution']),
+                    'n' => (int)$max_results,
                 ];
-	}
+       $key = "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";         
+      $ch = curl_init();
+  $headers  = [
+        'Accept: application/json',
+        'Content-Type: application/json',
+        'Authorization: Bearer '.$key
+    ];
+
+     curl_setopt($ch, CURLOPT_URL, 'https://api.openai.com/v1/images/generations');
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+  curl_setopt($ch, CURLOPT_POST, 1);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($complete)); 
+
+  $output = curl_exec($ch);
+ $err = curl_error($ch);
+  curl_close($ch);
+   # Print any errors, to help with debugging.
+if ($err) {
+   echo "cURL Error #:" . $err;
+  }
+// var_dump($output);
+// die();
+  file_put_contents("imageAiImage".$this->g_userID.".data",$output);
+$foutput=file_get_contents("imageAiImage".$this->g_userID.".data");
+$joutput=json_decode($foutput,true);
+
+if(isset($joutput)){
+     $path = './uploads/user_'.$this->g_userID.'/ai/generated/';
+        if (!file_exists($path)) {
+    mkdir($path, 0777, true);
+}
+
+    for($i = $max_results-1; $i >= 0; $i--){
+   $temp = time();
+  file_put_contents($path.$temp."image".$i.".png",file_get_contents($joutput["data"][$i]["url"]));
+   
+   $query = [
+           'user_id'=> $this->g_userID,
+           //'name' =>  request("name"),
+           'image_url' => $path.$temp."image".$i.".png",
+           'original' => html_escape($_POST['resolution']),
+           'type' => 'ai_image',
+       ];
+       $this->Common_DML->put_data('al_image', $query);
+}
+ if (file_exists("imageAiImage".$this->g_userID.".data")) {
+    unlink("imageAiImage".$this->g_userID.".data");
+    }
+
+redirect( 'images/getAiImages', 'refresh' );    
+}
+
+
+  
+}
+
+
+
+
+
+
+
+
+
 
 
 
