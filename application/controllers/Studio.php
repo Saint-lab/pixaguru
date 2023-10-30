@@ -62,6 +62,37 @@ class Studio extends CI_Controller {
 	}
 
 
+	public function boxshot($campaign_id = '', $template_id = '', $sub_user_id = '')	{
+
+		if($template_id !='' && $campaign_id != ''){
+			$data = array();
+			$userID = $this->g_userID;
+			$data['images'] = $this->Common_DML->get_data_limit( 'user_image', array( 'user_id' => $userID ), '*', array(0,21), 'id','DESC' );
+			
+			if(isset($sub_user_id) && !empty($sub_user_id)){
+				$sub_users = $this->Common_DML->get_data( 'sub_users', array('parent_user_id'=>$userID,'sub_user_id'=>$sub_user_id,'status'=>1) );
+				if(count($sub_users) == 1){
+					$userID = $sub_user_id;
+				}
+			}
+			
+			$data['userID'] = $userID;
+			$data['template'] = $this->Common_DML->get_data( 'user_templates', array( 'user_id' => $userID, 'campaign_id' => $campaign_id, 'template_id' => $template_id, 'status' => 1 ), '*', array() );
+			$data['theme_setting'] = $this->Common_DML->get_data( 'theme_setting', '', '*', array() );
+			
+			$data['template_id'] = $template_id;
+			$data['campaign_id'] = $campaign_id;
+			$data['suggestion_category'] = $this->Common_DML->get_data( 'suggestion_category' );
+		
+			if(empty($data['template'])) redirect( 'dashboard', 'refresh' );
+			//$this->load->view( 'editor', $data );
+		}
+		
+		$this->load->view('studios/header');
+		$this->load->view('studios/boxshot', $data);
+		$this->load->view('common/footer');	
+	}
+
 }
 
 

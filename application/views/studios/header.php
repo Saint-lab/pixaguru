@@ -105,7 +105,7 @@
 						</div>
 						<!-- Color Mode Switch -->
 						<!-- Example single danger button -->
-                        <span class="dropdown margin-right-10">
+                        <span id="download" class="dropdown margin-right-10">
 							<a href="#" class="ed_download_image btn btn-secondary dropdown-toggle" title="Download" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
 								<svg width="14" height="14" viewBox="0 0 14 14">
 									<path d="M1.75 14C1.26875 14 0.856626 13.8285 0.513626 13.4855C0.170626 13.1425 -0.000581848 12.7307 1.48557e-06 12.25V9.625H1.75V12.25H12.25V9.625H14V12.25C14 12.7312 13.8285 13.1434 13.4855 13.4864C13.1425 13.8294 12.7307 14.0006 12.25 14H1.75ZM7 10.5L2.625 6.125L3.85 4.85625L6.125 7.13125V0H7.875V7.13125L10.15 4.85625L11.375 6.125L7 10.5Z"/>

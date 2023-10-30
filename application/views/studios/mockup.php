@@ -1,17 +1,21 @@
 <?php 
-    $data = json_decode($template[0]['template_data']);
-    $styles = $data -> styles;
+    $data = json_decode($template[0]['template_data']) ;
+    $styles = $data -> styles ?? "" ;
 ?>
 
 <div class="page-content">
 
-    <div class="editor">
+    <div class="editor" id="editor">
+
+        <div class="preview" id="preview">
+
+            <img class="mockup-img" height="auto" src=<?php echo base_url().$template[0]['thumb']; ?> />
+            <!-- <img style="<?=$styles; ?>" class="img-file"  id="img-file">  -->
+
+            <img class="img-file"  id="img-file"> 
 
 
-        <img style="<?=$styles; ?>" class="img-file" id="img-file"> 
-
-        <img class="mockup-img" height="auto" src=<?php echo base_url().$template[0]['thumb']; ?> />
-
+        </div>
 
         <div> 
 
@@ -26,6 +30,13 @@
 
     </div>
 
+
 </div>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
 
 <script src="<?php echo base_url(); ?>assets/js/studio.js"></script> 
