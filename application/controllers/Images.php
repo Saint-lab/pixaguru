@@ -278,7 +278,7 @@ class Images extends CI_Controller {
 						$url = base_url() . 'studio/mockup/'.$campaign_id.'/'.$template_id;
 						break;
 					case "boxshot":
-						$url = base_url() . 'editor/edit/'.$campaign_id.'/'.$template_id;
+						$url = base_url() . 'studio/boxshot/'.$campaign_id.'/'.$template_id;
 						break;
 					default:
 						$url = base_url() . 'editor/edit/'.$campaign_id.'/'.$template_id;

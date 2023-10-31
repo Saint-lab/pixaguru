@@ -14,6 +14,11 @@
     gap: 10px;
 }
 
+.page-content .editor .preview {
+    display: block;
+    /* height: 400px; */
+}
+
 .page-content .editor .mockup-img {
     width: 100%;
 }
@@ -21,21 +26,43 @@
 
 
 .page-content .editor .img-file {
+    position: relative;
+    background-color: green;
+
+    margin-top: -364px;
+    width: 236px;
+    height: 140px;
+    transform-origin: 0% 0%;
+    margin-left: 126px;
+    perspective-origin: 40% 40%;
+    transform: perspective(500px) rotateY(-5deg) rotateZ(-0.1deg);
+    
+}
+
+.page-content .editor .img-file-1 {
     position: absolute;
     background-color: green;
 
-    /* top: 142.4px;
-    height: 219px;
+    top: 284px;
+    height: 224px;
     width: 310px;
-    margin-right: 2px; */
-
-    /* top: 178px;
-    height: 170px;
-    width: 304px; */
-
-    /* Mockup properties */
-
+    margin-right: 34px;
+    perspective-origin: left;
+    transform: perspective(1200px) rotateY(-48deg) rotateZ(1.4deg) skewX(0.8deg); 
 }
+
+.page-content .editor .img-file-2 {
+    position: absolute;
+    background-color: green;
+
+    top: 288px;
+    height: 224px;
+    width: 198px;
+    margin-left: 224px; 
+    perspective-origin: 100% 100%;
+    transform: perspective(1500px) rotateY(85deg) rotateZ(0deg) skewX(-1.6deg); 
+}
+
 
 
 
@@ -47,10 +74,10 @@ Mockup properties
     width: 366px;
 
 2. Laptop Screen
-    top: 195px;
-    height: 194px;
-    width: 310px;
-    margin-left: 3px;
+    top: -302.8px;
+    height: 192px;
+    width: 309px;
+    left: 97px;
 
 3. Smart Home Screen
     top: 194px;
@@ -58,18 +85,55 @@ Mockup properties
     height: 140px;
     transform-origin: 0% 0%;
     transform: skew(-1deg) rotate(0deg);
+
 4. Phone Mockup
     top: 207px;
     height: 214px;
     width: 100px;
     margin-right: 18px;
     border-radius: 8px;
-    transform: rotateZ(-0.4deg)
+    transform: rotateZ(-0.4deg);
+
 5. Painting
     top: 142.4px;
     height: 219px;
     width: 310px;
     margin-right: 2px;
 
+6.  Laptop Screen 3
+    margin-top: -408px;
+    height: 188px;
+    width: 286px;
+    margin-left: 56px;
+    perspective-origin: 40% 40%;
+    transform: perspective(500px) rotateY(26deg) rotateZ(0.5deg);
+
+7.  Laptop Screen 2
+    margin-top: -434px;
+    height: 264px;
+    width: 420px;
+    margin-left: 48px;
+    perspective-origin: 40% 40%;
+    border-radius: 4px;
+    transform: perspective(760px) rotateY(-30deg) rotateZ(3deg) skewX(-2deg);
+
+8.  Work
+    top: 161px;
+    height: 116px;
+    width: 176px;
+    margin-left: 102px;
+    margin-right: 58px;
+    perspective-origin: 40% 40%;
+    transform: perspective(460px) rotateY(-30deg) rotateZ(12deg) skewX(1.4deg);
+
+9.  Ordering Online
+    margin-top: -390px;
+    height: 105px;
+    width: 181px;
+    margin-left: 102.4px;
+    perspective-origin: 40% 40%;
+    transform: perspective(580px) rotateY(30deg) rotateZ(-18.9deg) skewX(1.4deg);
 
 */
+
+
